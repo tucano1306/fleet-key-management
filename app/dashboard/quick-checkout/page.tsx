@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { searchKeyByNumber, quickCheckoutKey, type KeyInfo } from './actions'
+import { searchKeyByNumber, quickCheckoutKey, quickCheckinKey, type KeyInfo } from './actions'
 import { useRouter } from 'next/navigation'
 
 export default function QuickCheckoutPage() {
@@ -58,20 +58,38 @@ export default function QuickCheckoutPage() {
     setIsProcessing(true)
     setError(null)
 
-    const result = await quickCheckoutKey(keyInfo.key.id)
+    // If key is already checked out by current user, return it
+    if (keyInfo.key.status === 'CHECKED_OUT_BY_ME' && keyInfo.key.currentTransaction) {
+      const result = await quickCheckinKey(keyInfo.key.currentTransaction.id)
 
-    if (result.success) {
-      setSuccessMessage(`✓ Llave ${keyInfo.key.keyNumber} retirada exitosamente`)
-      setKeyNumber('')
-      setKeyInfo(null)
-      
-      // Clear success message and refocus after 3 seconds
-      setTimeout(() => {
-        setSuccessMessage(null)
-        inputRef.current?.focus()
-      }, 3000)
+      if (result.success) {
+        setSuccessMessage(`✓ Llave ${keyInfo.key.keyNumber} devuelta exitosamente`)
+        setKeyNumber('')
+        setKeyInfo(null)
+        
+        setTimeout(() => {
+          setSuccessMessage(null)
+          inputRef.current?.focus()
+        }, 3000)
+      } else {
+        setError(result.error || 'Error al procesar la devolución')
+      }
     } else {
-      setError(result.error || 'Error al procesar el retiro')
+      // Otherwise, check it out
+      const result = await quickCheckoutKey(keyInfo.key.id)
+
+      if (result.success) {
+        setSuccessMessage(`✓ Llave ${keyInfo.key.keyNumber} retirada exitosamente`)
+        setKeyNumber('')
+        setKeyInfo(null)
+        
+        setTimeout(() => {
+          setSuccessMessage(null)
+          inputRef.current?.focus()
+        }, 3000)
+      } else {
+        setError(result.error || 'Error al procesar el retiro')
+      }
     }
 
     setIsProcessing(false)
@@ -144,9 +162,15 @@ export default function QuickCheckoutPage() {
             {/* Key Info Display */}
             {keyInfo?.key && !isSearching && (
               <div className="space-y-4">
-                <div className="rounded-lg bg-primary-50 p-6">
+                <div className={`rounded-lg p-6 ${
+                  keyInfo.key.status === 'CHECKED_OUT_BY_ME' 
+                    ? 'bg-amber-50 border-2 border-amber-300' 
+                    : 'bg-primary-50'
+                }`}>
                   <h3 className="mb-4 text-center text-xl font-bold text-primary-900">
-                    Unidad Encontrada
+                    {keyInfo.key.status === 'CHECKED_OUT_BY_ME' 
+                      ? '⚠️ Esta llave ya está en tu posesión' 
+                      : 'Unidad Encontrada'}
                   </h3>
                   
                   <div className="space-y-3">
@@ -175,6 +199,23 @@ export default function QuickCheckoutPage() {
                         {keyInfo.key.vehicle.brand} {keyInfo.key.vehicle.model}
                       </span>
                     </div>
+
+                    {keyInfo.key.status === 'CHECKED_OUT_BY_ME' && keyInfo.key.currentTransaction && (
+                      <div className="mt-4 pt-4 border-t-2 border-amber-300">
+                        <div className="flex justify-between">
+                          <span className="font-semibold text-amber-700">Retirada desde:</span>
+                          <span className="text-amber-900 font-bold">
+                            {new Date(keyInfo.key.currentTransaction.checkoutTime).toLocaleString('es-ES', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -182,14 +223,26 @@ export default function QuickCheckoutPage() {
                 <Button
                   onClick={handleConfirm}
                   disabled={isProcessing}
-                  className="h-14 w-full text-xl font-bold"
+                  className={`h-14 w-full text-xl font-bold ${
+                    keyInfo.key.status === 'CHECKED_OUT_BY_ME'
+                      ? 'bg-amber-600 hover:bg-amber-700'
+                      : ''
+                  }`}
                   size="lg"
                 >
-                  {isProcessing ? 'Procesando...' : 'Confirmar Retiro (Enter)'}
+                  {isProcessing 
+                    ? 'Procesando...' 
+                    : keyInfo.key.status === 'CHECKED_OUT_BY_ME'
+                      ? '✓ Devolver Llave (Enter)'
+                      : 'Confirmar Retiro (Enter)'
+                  }
                 </Button>
 
                 <p className="text-center text-sm text-primary-600">
-                  Presiona Enter o haz clic en el botón para confirmar
+                  {keyInfo.key.status === 'CHECKED_OUT_BY_ME'
+                    ? 'Presiona Enter o haz clic para devolver la llave'
+                    : 'Presiona Enter o haz clic en el botón para confirmar'
+                  }
                 </p>
               </div>
             )}
