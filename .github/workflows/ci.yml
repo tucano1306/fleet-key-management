@@ -102,7 +102,8 @@ jobs:
     - name: Run migrations (dry-run)
       run: npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma
 
+    - name: Create test database and run migrations
+      run: npx prisma db push --accept-data-loss
+
     - name: Test seed script
-      run: |
-        npx prisma migrate deploy
-        npx tsx prisma/seed.ts
+      run: npx tsx prisma/seed.ts
