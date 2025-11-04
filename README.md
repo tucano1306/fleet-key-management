@@ -1,20 +1,27 @@
-# Sistema de Gestión de Llaves
+# Fleet Key Management System 🔑
 
-Sistema completo de gestión de llaves de vehículos con autenticación basada en PIN, desarrollado con Next.js 14, TypeScript, Prisma ORM y PostgreSQL.
+[![CI](https://github.com/tucano1306/fleet-key-management/actions/workflows/ci.yml/badge.svg)](https://github.com/tucano1306/fleet-key-management/actions/workflows/ci.yml)
+[![Deploy](https://github.com/tucano1306/fleet-key-management/actions/workflows/deploy.yml/badge.svg)](https://github.com/tucano1306/fleet-key-management/actions/workflows/deploy.yml)
+[![Code Quality](https://github.com/tucano1306/fleet-key-management/actions/workflows/code-quality.yml/badge.svg)](https://github.com/tucano1306/fleet-key-management/actions/workflows/code-quality.yml)
+
+Sistema completo de gestión de llaves de vehículos con autenticación basada en PIN, desarrollado con Next.js 14, TypeScript, Prisma ORM y SQLite.
 
 ## 🚀 Características
 
-- **Autenticación con PIN**: Sistema seguro de autenticación usando PIN de 4-6 dígitos
+- **Sistema de Roles**: DISPATCH (admin), DRIVER (chofer), CLEANING_STAFF (limpieza)
+- **Autenticación Dual**: ID para dispatch, licencia para choferes/staff
 - **Gestión de Llaves**: Retiro y devolución de llaves de vehículos
+- **Retiro Rápido**: Interface optimizada para operaciones rápidas
+- **Panel Administrativo**: Monitoreo, reportes y alertas en tiempo real
 - **Dashboard Responsive**: Interfaz adaptable para escritorio, tablet y móvil
 - **Transacciones en Tiempo Real**: Seguimiento de quién tiene cada llave
-- **Base de Datos PostgreSQL**: Almacenamiento confiable con Prisma ORM
+- **Registro de Incidentes**: Documentación de condiciones del vehículo
+- **Base de Datos SQLite**: Almacenamiento confiable con Prisma ORM
 - **Server Actions**: Operaciones del servidor optimizadas con Next.js 14
 
 ## 📋 Prerrequisitos
 
 - Node.js 18.x o superior
-- PostgreSQL 14.x o superior
 - npm o yarn
 
 ## 🛠️ Instalación
