@@ -61,9 +61,10 @@ export function KeyRegistrationForm({ vehicles }: KeyRegistrationFormProps) {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: name === 'keyNumber' ? value.toUpperCase() : value
     }))
   }
 

@@ -35,13 +35,8 @@ export default async function KeysManagementPage() {
     }
   })
 
-  // Obtener vehículos sin llave asignada
-  const vehiclesWithoutKeys = await prisma.vehicle.findMany({
-    where: {
-      keys: {
-        none: {}
-      }
-    },
+  // Obtener TODOS los vehículos (permitiendo múltiples llaves por vehículo)
+  const allVehicles = await prisma.vehicle.findMany({
     orderBy: {
       unitNumber: 'asc'
     }
@@ -58,7 +53,7 @@ export default async function KeysManagementPage() {
       </div>
 
       {/* Formulario para registrar nueva llave */}
-      <KeyRegistrationForm vehicles={vehiclesWithoutKeys} />
+      <KeyRegistrationForm vehicles={allVehicles} />
 
       {/* Lista de llaves registradas */}
       <div>

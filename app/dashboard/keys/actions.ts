@@ -20,26 +20,17 @@ export async function registerKeyAction(data: RegisterKeyData) {
 
     // Verificar que el número de llave no exista
     const existingKey = await prisma.key.findUnique({
-      where: { keyNumber: data.keyNumber }
+      where: { keyNumber: data.keyNumber.toUpperCase() }
     })
 
     if (existingKey) {
       return { success: false, error: 'Este número de llave ya está registrado' }
     }
 
-    // Verificar que el vehículo no tenga ya una llave asignada
-    const vehicleWithKey = await prisma.key.findFirst({
-      where: { vehicleId: data.vehicleId }
-    })
-
-    if (vehicleWithKey) {
-      return { success: false, error: 'Este vehículo ya tiene una llave asignada' }
-    }
-
-    // Crear la llave
+    // Crear la llave (permitiendo múltiples llaves por vehículo)
     await prisma.key.create({
       data: {
-        keyNumber: data.keyNumber,
+        keyNumber: data.keyNumber.toUpperCase(),
         vehicleId: data.vehicleId,
         location: data.location,
         notes: data.notes || null,
