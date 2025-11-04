@@ -24,7 +24,7 @@ export default async function KeysManagementPage() {
           user: {
             select: {
               fullName: true,
-              licenseNumber: true
+              licenseLast4: true
             }
           }
         }
