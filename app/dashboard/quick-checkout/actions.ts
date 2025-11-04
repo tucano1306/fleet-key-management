@@ -1,8 +1,9 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth'
+import { getSession, destroySession } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export interface KeyInfo {
   success: boolean
@@ -216,4 +217,9 @@ export async function quickCheckinKey(transactionId: string) {
     console.error('Error in quick checkin:', error)
     return { success: false, error: 'Error al registrar la devolución de llave' }
   }
+}
+
+export async function logoutAndRedirect() {
+  await destroySession()
+  redirect('/login')
 }

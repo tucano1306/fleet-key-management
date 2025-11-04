@@ -4,11 +4,9 @@ import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { searchKeyByNumber, quickCheckoutKey, quickCheckinKey, type KeyInfo } from './actions'
-import { useRouter } from 'next/navigation'
+import { searchKeyByNumber, quickCheckoutKey, quickCheckinKey, logoutAndRedirect, type KeyInfo } from './actions'
 
 export default function QuickCheckoutPage() {
-  const router = useRouter()
   const [keyNumber, setKeyNumber] = useState('')
   const [keyInfo, setKeyInfo] = useState<KeyInfo | null>(null)
   const [isSearching, setIsSearching] = useState(false)
@@ -67,12 +65,13 @@ export default function QuickCheckoutPage() {
         setKeyNumber('')
         setKeyInfo(null)
         
-        setTimeout(() => {
-          setSuccessMessage(null)
-          inputRef.current?.focus()
-        }, 3000)
+        // Logout and redirect after 2 seconds
+        setTimeout(async () => {
+          await logoutAndRedirect()
+        }, 2000)
       } else {
         setError(result.error || 'Error al procesar la devolución')
+        setIsProcessing(false)
       }
     } else {
       // Otherwise, check it out
@@ -83,16 +82,15 @@ export default function QuickCheckoutPage() {
         setKeyNumber('')
         setKeyInfo(null)
         
-        setTimeout(() => {
-          setSuccessMessage(null)
-          inputRef.current?.focus()
-        }, 3000)
+        // Logout and redirect after 2 seconds
+        setTimeout(async () => {
+          await logoutAndRedirect()
+        }, 2000)
       } else {
         setError(result.error || 'Error al procesar el retiro')
+        setIsProcessing(false)
       }
     }
-
-    setIsProcessing(false)
   }
 
   // Handle Enter key
@@ -119,6 +117,9 @@ export default function QuickCheckoutPage() {
             <CardContent className="pt-6">
               <p className="text-center text-xl font-semibold text-green-700">
                 {successMessage}
+              </p>
+              <p className="text-center text-sm text-green-600 mt-2">
+                Cerrando sesión por seguridad...
               </p>
             </CardContent>
           </Card>
@@ -248,17 +249,6 @@ export default function QuickCheckoutPage() {
             )}
           </CardContent>
         </Card>
-
-        {/* Back Button */}
-        <div className="text-center">
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/dashboard')}
-            className="text-primary-700 hover:text-primary-900"
-          >
-            ← Volver al Dashboard
-          </Button>
-        </div>
       </div>
     </div>
   )
