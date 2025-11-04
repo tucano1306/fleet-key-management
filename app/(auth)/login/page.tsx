@@ -21,8 +21,16 @@ export default function LoginPage() {
     setError('')
 
     if (!identifier.trim() || !pin.trim()) {
-      setError(`Por favor ingrese ${userType === 'DISPATCH' ? 'ID' : 'licencia'} y PIN`)
+      setError(`Por favor ingrese ${userType === 'DISPATCH' ? 'ID' : 'últimos 4 dígitos de licencia'} y PIN`)
       return
+    }
+
+    // Validar formato de licenseLast4 para DRIVER
+    if (userType === 'DRIVER') {
+      if (identifier.length !== 4 || !/^\d{4}$/.test(identifier)) {
+        setError('Los últimos 4 dígitos de licencia deben ser exactamente 4 números')
+        return
+      }
     }
 
     if (pin.length < 4) {
@@ -73,12 +81,15 @@ export default function LoginPage() {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              {userType === 'DISPATCH' ? 'ID' : 'Licencia'}
+              {userType === 'DISPATCH' ? 'ID' : 'Últimos 4 Dígitos de Licencia'}
             </label>
             <Input
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              placeholder={userType === 'DISPATCH' ? '0000' : 'DL123456'}
+              placeholder={userType === 'DISPATCH' ? '0000' : '1234'}
+              maxLength={userType === 'DISPATCH' ? 10 : 4}
+              inputMode={userType === 'DRIVER' ? 'numeric' : 'text'}
+              pattern={userType === 'DRIVER' ? '[0-9]{4}' : undefined}
             />
           </div>
 

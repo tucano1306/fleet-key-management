@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     fullName: '',
-    licenseNumber: '',
+    licenseLast4: '',
     role: 'DRIVER',
     pin: '',
     confirmPin: ''
@@ -25,8 +25,14 @@ export default function RegisterPage() {
     setError(null)
 
     // Validaciones del lado del cliente
-    if (!formData.fullName || !formData.licenseNumber || !formData.pin || !formData.confirmPin) {
+    if (!formData.fullName || !formData.licenseLast4 || !formData.pin || !formData.confirmPin) {
       setError('Todos los campos son obligatorios')
+      return
+    }
+
+    // Validar formato de los últimos 4 dígitos
+    if (formData.licenseLast4.length !== 4 || !/^\d{4}$/.test(formData.licenseLast4)) {
+      setError('Los últimos 4 dígitos de licencia deben ser exactamente 4 números')
       return
     }
 
@@ -48,7 +54,7 @@ export default function RegisterPage() {
     startTransition(async () => {
       const result = await registerAction({
         fullName: formData.fullName,
-        licenseNumber: formData.licenseNumber,
+        licenseLast4: formData.licenseLast4,
         role: formData.role as 'DRIVER' | 'CLEANING_STAFF',
         pin: formData.pin
       })
@@ -123,15 +129,18 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="licenseNumber" className="text-sm font-medium text-gray-700">
-                Número de Licencia
+              <label htmlFor="licenseLast4" className="text-sm font-medium text-gray-700">
+                Últimos 4 Dígitos de Licencia
               </label>
               <Input
-                id="licenseNumber"
-                name="licenseNumber"
+                id="licenseLast4"
+                name="licenseLast4"
                 type="text"
-                placeholder="DL123456"
-                value={formData.licenseNumber}
+                inputMode="numeric"
+                pattern="[0-9]{4}"
+                maxLength={4}
+                placeholder="1234"
+                value={formData.licenseLast4}
                 onChange={handleChange}
                 disabled={isPending}
                 required

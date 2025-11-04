@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 
 interface RegisterData {
   fullName: string
-  licenseNumber: string
+  licenseLast4: string
   role: 'DRIVER' | 'CLEANING_STAFF'
   pin: string
 }
@@ -13,8 +13,13 @@ interface RegisterData {
 export async function registerAction(data: RegisterData) {
   try {
     // Validaciones del servidor
-    if (!data.fullName || !data.licenseNumber || !data.pin) {
+    if (!data.fullName || !data.licenseLast4 || !data.pin) {
       return { success: false, error: 'Todos los campos son obligatorios' }
+    }
+
+    // Validar formato de los últimos 4 dígitos de licencia
+    if (data.licenseLast4.length !== 4 || !/^\d{4}$/.test(data.licenseLast4)) {
+      return { success: false, error: 'Los últimos 4 dígitos de licencia deben ser exactamente 4 números' }
     }
 
     // Validar formato del PIN
@@ -26,19 +31,17 @@ export async function registerAction(data: RegisterData) {
       return { success: false, error: 'El PIN solo debe contener números' }
     }
 
-    // Generar employeeId automáticamente basado en el número de licencia
-    // Usar las primeras letras/números de la licencia + timestamp único
+    // Generar employeeId automáticamente basado en los últimos 4 dígitos + timestamp
     const timestamp = Date.now().toString().slice(-4)
-    const licensePrefix = data.licenseNumber.replace(/[^a-zA-Z0-9]/g, '').slice(0, 6).toUpperCase()
-    const employeeId = `${licensePrefix}${timestamp}`
+    const employeeId = `DRV${data.licenseLast4}${timestamp}`
 
-    // Verificar que el número de licencia no exista
+    // Verificar que los últimos 4 dígitos de licencia no existan
     const existingLicense = await prisma.user.findUnique({
-      where: { licenseNumber: data.licenseNumber }
+      where: { licenseLast4: data.licenseLast4 }
     })
 
     if (existingLicense) {
-      return { success: false, error: 'Este número de licencia ya está registrado' }
+      return { success: false, error: 'Estos últimos 4 dígitos de licencia ya están registrados' }
     }
 
     // Hash del PIN
@@ -49,7 +52,7 @@ export async function registerAction(data: RegisterData) {
       data: {
         employeeId: employeeId,
         fullName: data.fullName,
-        licenseNumber: data.licenseNumber,
+        licenseLast4: data.licenseLast4,
         role: data.role,
         pinHash: pinHash,
         isActive: true

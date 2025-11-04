@@ -6,7 +6,7 @@ export interface AuthUser {
   id: string
   employeeId: string
   fullName: string
-  licenseNumber: string | null
+  licenseLast4: string | null
   dispatchId: string | null
   role: string // 'DISPATCH', 'DRIVER', or 'CLEANING_STAFF'
 }
@@ -54,7 +54,7 @@ export async function getSession(): Promise<AuthUser | null> {
         id: true,
         employeeId: true,
         fullName: true,
-        licenseNumber: true,
+        licenseLast4: true,
         dispatchId: true,
         role: true,
       },
@@ -81,7 +81,7 @@ export async function verifyDispatch(dispatchId: string, pin: string): Promise<A
         id: true,
         employeeId: true,
         fullName: true,
-        licenseNumber: true,
+        licenseLast4: true,
         dispatchId: true,
         role: true,
         pinHash: true,
@@ -107,16 +107,16 @@ export async function verifyDispatch(dispatchId: string, pin: string): Promise<A
   }
 }
 
-// Verify DRIVER/CLEANING_STAFF by License and PIN
-export async function verifyDriver(licenseNumber: string, pin: string): Promise<AuthUser | null> {
+// Verify DRIVER/CLEANING_STAFF by Last 4 Digits of License and PIN
+export async function verifyDriver(licenseLast4: string, pin: string): Promise<AuthUser | null> {
   try {
     const user = await prisma.user.findUnique({
-      where: { licenseNumber, isActive: true },
+      where: { licenseLast4, isActive: true },
       select: {
         id: true,
         employeeId: true,
         fullName: true,
-        licenseNumber: true,
+        licenseLast4: true,
         dispatchId: true,
         role: true,
         pinHash: true,

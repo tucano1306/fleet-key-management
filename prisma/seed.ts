@@ -12,14 +12,14 @@ async function main() {
       employeeId: 'DISPATCH001',
       fullName: 'Dispatch Central',
       dispatchId: '0000',
-      licenseNumber: null,
+      licenseLast4: null,
       pin: '0000',
       role: 'DISPATCH',
     },
     {
       employeeId: 'DRV001',
       fullName: 'Juan Pérez',
-      licenseNumber: 'DL12345678',
+      licenseLast4: '5678', // Últimos 4 dígitos de DL12345678
       dispatchId: null,
       pin: '1234',
       role: 'DRIVER',
@@ -27,7 +27,7 @@ async function main() {
     {
       employeeId: 'DRV002',
       fullName: 'María González',
-      licenseNumber: 'DL87654321',
+      licenseLast4: '4321', // Últimos 4 dígitos de DL87654321
       dispatchId: null,
       pin: '5678',
       role: 'DRIVER',
@@ -35,7 +35,7 @@ async function main() {
     {
       employeeId: 'CLN001',
       fullName: 'Carlos Rodríguez',
-      licenseNumber: 'DL11223344',
+      licenseLast4: '3344', // Últimos 4 dígitos de DL11223344
       dispatchId: null,
       pin: '9012',
       role: 'CLEANING_STAFF',
@@ -51,7 +51,7 @@ async function main() {
       create: {
         employeeId: userData.employeeId,
         fullName: userData.fullName,
-        ...(userData.licenseNumber && { licenseNumber: userData.licenseNumber }),
+        ...(userData.licenseLast4 && { licenseLast4: userData.licenseLast4 }),
         ...(userData.dispatchId && { dispatchId: userData.dispatchId }),
         pinHash,
         role: userData.role,

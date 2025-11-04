@@ -14,7 +14,7 @@ model User {
   id              String           @id @default(cuid())
   employeeId      String           @unique @map("employee_id")
   fullName        String           @map("full_name")
-  licenseNumber   String?          @unique @map("license_number") // Optional - only for DRIVER/CLEANING_STAFF
+  licenseLast4    String?          @unique @map("license_last4") // Últimos 4 dígitos de licencia - DRIVER/CLEANING_STAFF
   dispatchId      String?          @unique @map("dispatch_id") // Optional - only for DISPATCH (e.g., "0000")
   pinHash         String           @map("pin_hash")
   role            String           @default("DRIVER") // DISPATCH, DRIVER, CLEANING_STAFF
