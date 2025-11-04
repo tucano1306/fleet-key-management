@@ -70,7 +70,7 @@ export default async function ReportsPage() {
       user: {
         select: {
           fullName: true,
-          licenseNumber: true
+          licenseLast4: true
         }
       }
     },
@@ -130,7 +130,7 @@ export default async function ReportsPage() {
                         Placa: {incident.key.vehicle.plateNumber} • Unidad: {incident.key.vehicle.unitNumber}
                       </p>
                       <p className="text-sm text-gray-700 mt-2">
-                        <strong>Chofer:</strong> {incident.user.fullName} ({incident.user.licenseNumber})
+                        <strong>Chofer:</strong> {incident.user.fullName} {incident.user.licenseLast4 && `(Lic: ${incident.user.licenseLast4})`}
                       </p>
                       {incident.incidentReport && (
                         <div className="mt-3 p-3 bg-amber-50 rounded border border-amber-200">
@@ -223,7 +223,7 @@ export default async function ReportsPage() {
                   return (
                     <tr key={driver.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="p-3 font-medium">{driver.fullName}</td>
-                      <td className="p-3 text-gray-600">{driver.licenseNumber}</td>
+                      <td className="p-3 text-gray-600">{driver.licenseLast4 || driver.employeeId}</td>
                       <td className="p-3 text-center">
                         <Badge variant="info">{driver.keyTransactions.length}</Badge>
                       </td>
