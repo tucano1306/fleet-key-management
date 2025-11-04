@@ -101,24 +101,42 @@ export default function QuickCheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 p-3 sm:p-4 md:p-6">
-      <div className="mx-auto max-w-2xl space-y-4 sm:space-y-6 pt-4 sm:pt-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-3 sm:p-4 md:p-6 relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-soft"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-soft"></div>
+      
+      <div className="mx-auto max-w-2xl space-y-4 sm:space-y-6 pt-4 sm:pt-8 relative z-10">
         {/* Header */}
-        <div className="text-center px-2">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-900">Retiro Rápido de Llaves</h1>
-          <p className="mt-2 text-sm sm:text-base md:text-lg text-primary-700">
-            Ingresa el número de la llave para comenzar
+        <div className="text-center px-2 animate-slide-up">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-glow mb-4">
+            <svg className="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+            Retiro Rápido
+          </h1>
+          <p className="mt-2 text-sm sm:text-base md:text-lg text-gray-600">
+            Escanea o ingresa el número de llave
           </p>
         </div>
 
         {/* Success Message */}
         {successMessage && (
-          <Card className="border-green-200 bg-green-50">
+          <Card className="border-0 bg-gradient-to-r from-success-50 to-emerald-50 shadow-glow-green animate-fade-in">
             <CardContent className="pt-4 sm:pt-6 px-4">
-              <p className="text-center text-lg sm:text-xl font-semibold text-green-700">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <div className="w-12 h-12 bg-success-500 rounded-full flex items-center justify-center">
+                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-center text-lg sm:text-xl font-bold text-success-700">
                 {successMessage}
               </p>
-              <p className="text-center text-xs sm:text-sm text-green-600 mt-2">
+              <p className="text-center text-xs sm:text-sm text-success-600 mt-2">
                 Cerrando sesión por seguridad...
               </p>
             </CardContent>
@@ -126,37 +144,49 @@ export default function QuickCheckoutPage() {
         )}
 
         {/* Main Input Card */}
-        <Card className="shadow-xl">
-          <CardHeader className="px-4 sm:px-6">
-            <CardTitle className="text-lg sm:text-xl md:text-2xl">Número de Llave</CardTitle>
-            <CardDescription className="text-xs sm:text-sm">
-              Ingresa el número de la llave que deseas retirar
+        <Card className="shadow-2xl border-0 overflow-hidden animate-slide-up">
+          <div className="gradient-primary h-1"></div>
+          <CardHeader className="px-4 sm:px-6 bg-gradient-to-br from-white to-gray-50">
+            <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">Número de Llave</CardTitle>
+            <CardDescription className="text-xs sm:text-sm text-gray-500">
+              Ingresa el código de la llave que necesitas
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 px-4 sm:px-6">
+          <CardContent className="space-y-4 px-4 sm:px-6 pb-6">
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Ej: KEY-001"
+              placeholder="K001"
               value={keyNumber}
               onChange={(e) => setKeyNumber(e.target.value.toUpperCase())}
               onKeyDown={handleKeyPress}
-              className="h-12 sm:h-14 md:h-16 text-center text-lg sm:text-xl md:text-2xl font-bold uppercase"
+              className="h-14 sm:h-16 md:h-20 text-center text-xl sm:text-2xl md:text-3xl font-bold uppercase border-2 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 transition-all shadow-sm"
               disabled={isProcessing}
               autoComplete="off"
             />
 
             {/* Error Message */}
             {error && (
-              <div className="rounded-lg bg-red-50 p-3 sm:p-4 text-center">
-                <p className="text-sm sm:text-base text-red-700 font-medium">{error}</p>
+              <div className="rounded-xl bg-gradient-to-r from-danger-50 to-red-50 border border-danger-200 p-3 sm:p-4 animate-fade-in">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-danger-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-sm sm:text-base text-danger-700 font-medium">{error}</p>
+                </div>
               </div>
             )}
 
             {/* Loading State */}
             {isSearching && (
-              <div className="text-center py-2">
-                <p className="text-sm sm:text-base text-primary-600">Buscando llave...</p>
+              <div className="text-center py-4">
+                <div className="inline-flex items-center gap-3">
+                  <svg className="animate-spin h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <p className="text-sm sm:text-base text-primary-600 font-medium">Buscando llave...</p>
+                </div>
               </div>
             )}
 

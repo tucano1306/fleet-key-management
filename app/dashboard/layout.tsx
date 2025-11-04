@@ -20,14 +20,14 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const isAdmin = session.role === 'DISPATCH'
   
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
+      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
           <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-md">
                 <svg
-                  className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -35,15 +35,17 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
                   />
                 </svg>
               </div>
               <div>
-                <h1 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">Gestión de Llaves</h1>
-                <p className="text-xs text-gray-600 hidden sm:block">
-                  {isAdmin ? 'Dispatch Central' : 'Panel de Chofer'}
+                <h1 className="text-sm sm:text-base md:text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                  KeyFlow
+                </h1>
+                <p className="text-xs text-gray-500 hidden sm:block">
+                  {isAdmin ? '🎯 Control Central' : '🚗 Panel Conductor'}
                 </p>
               </div>
             </div>
