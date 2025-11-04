@@ -178,7 +178,7 @@ export default async function DashboardPage() {
           <CardTitle>Todas las Llaves</CardTitle>
         </CardHeader>
         <CardContent>
-          <KeyList keys={keys} userId={session.id} />
+          <KeyList keys={keys} userId={session.id} userRole={session.role} />
         </CardContent>
       </Card>
     </div>

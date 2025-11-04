@@ -32,9 +32,10 @@ interface KeyWithTransactions {
 interface KeyListProps {
   keys: KeyWithTransactions[]
   userId: string
+  userRole?: string
 }
 
-export function KeyList({ keys, userId }: KeyListProps) {
+export function KeyList({ keys, userId, userRole }: KeyListProps) {
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const [loadingKeyId, setLoadingKeyId] = useState<string | null>(null)
@@ -157,7 +158,8 @@ export function KeyList({ keys, userId }: KeyListProps) {
                 )}
               </div>
               
-              {isAvailable && (
+              {/* Botón Retirar - Solo visible para DRIVER y CLEANING_STAFF */}
+              {isAvailable && userRole !== 'DISPATCH' && (
                 <Button
                   onClick={() => handleCheckout(key.id)}
                   className="w-full"
