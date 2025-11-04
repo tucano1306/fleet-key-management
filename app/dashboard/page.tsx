@@ -65,31 +65,33 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Quick Checkout Banner */}
-      <Card className="border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
-        <CardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+      {/* Quick Checkout Banner - SOLO para DRIVER y CLEANING_STAFF */}
+      {session.role !== 'DISPATCH' && (
+        <Card className="border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+          <CardContent className="pt-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">Retiro Rápido de Llaves</h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Ingresa el número de llave y confirma en segundos
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">Retiro Rápido de Llaves</h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Ingresa el número de llave y confirma en segundos
-                </p>
-              </div>
+              <Link href="/dashboard/quick-checkout">
+                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white h-12 px-8 text-lg font-semibold shadow-lg">
+                  Iniciar Retiro →
+                </Button>
+              </Link>
             </div>
-            <Link href="/dashboard/quick-checkout">
-              <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white h-12 px-8 text-lg font-semibold shadow-lg">
-                Iniciar Retiro →
-              </Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Statistics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">

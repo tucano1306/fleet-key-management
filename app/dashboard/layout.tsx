@@ -59,14 +59,6 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                       <span className="hidden sm:inline">Inicio</span>
                     </Button>
                   </Link>
-                  <Link href="/dashboard/quick-checkout">
-                    <Button variant="secondary" size="sm" className="bg-green-600 text-white hover:bg-green-700">
-                      <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                      <span className="hidden sm:inline">Retiro Rápido</span>
-                    </Button>
-                  </Link>
                   <Link href="/dashboard/admin">
                     <Button variant="ghost" size="sm">
                       <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
