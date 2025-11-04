@@ -54,25 +54,25 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="shadow-xl">
-      <CardHeader className="space-y-3 pb-6">
-        <CardTitle className="text-center">Sistema de Gestión de Llaves</CardTitle>
+    <Card className="shadow-xl w-full max-w-md">
+      <CardHeader className="space-y-3 pb-6 px-4 sm:px-6">
+        <CardTitle className="text-center text-lg sm:text-xl md:text-2xl">Sistema de Gestión de Llaves</CardTitle>
       </CardHeader>
       
-      <CardContent>
+      <CardContent className="px-4 sm:px-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-800">
+            <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-xs sm:text-sm text-red-800">
               {error}
             </div>
           )}
           
           <div className="space-y-2">
-            <label className="text-sm font-medium">Tipo de Usuario</label>
+            <label className="text-xs sm:text-sm font-medium">Tipo de Usuario</label>
             <select
               value={userType}
               onChange={(e) => setUserType(e.target.value as any)}
-              className="w-full h-11 rounded-md border px-3"
+              className="w-full h-10 sm:h-11 rounded-md border px-3 text-sm sm:text-base"
             >
               <option value="DRIVER">Chofer / Staff</option>
               <option value="DISPATCH">Dispatch</option>
@@ -80,7 +80,7 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">
+            <label className="text-xs sm:text-sm font-medium">
               {userType === 'DISPATCH' ? 'ID' : 'Últimos 4 Dígitos de Licencia'}
             </label>
             <Input
@@ -90,25 +90,27 @@ export default function LoginPage() {
               maxLength={userType === 'DISPATCH' ? 10 : 4}
               inputMode={userType === 'DRIVER' ? 'numeric' : 'text'}
               pattern={userType === 'DRIVER' ? '[0-9]{4}' : undefined}
+              className="h-10 sm:h-11 text-sm sm:text-base"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">PIN</label>
+            <label className="text-xs sm:text-sm font-medium">PIN</label>
             <Input
               type="password"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               maxLength={6}
+              className="h-10 sm:h-11 text-sm sm:text-base"
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full h-10 sm:h-11 text-sm sm:text-base" disabled={isPending}>
             {isPending ? 'Iniciando...' : 'Iniciar Sesión'}
           </Button>
 
           {userType === 'DRIVER' && (
-            <div className="text-center text-sm">
+            <div className="text-center text-xs sm:text-sm">
               <Link href="/register" className="text-primary-600">Regístrate</Link>
             </div>
           )}

@@ -99,12 +99,12 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
           return (
             <div
               key={key.id}
-              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white"
+              className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow bg-white"
             >
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <span className="text-lg font-semibold text-gray-900">{key.keyNumber}</span>
+                  <div className="flex items-center flex-wrap gap-2 mb-1">
+                    <span className="text-base sm:text-lg font-semibold text-gray-900">{key.keyNumber}</span>
                     {getKeyStatusBadge()}
                   </div>
                   <p className="text-sm font-medium text-gray-700">
@@ -114,7 +114,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
                     {key.vehicle.unitNumber} • Placa: {key.vehicle.plateNumber}
                   </p>
                 </div>
-                <div className="ml-2">
+                <div className="sm:ml-2">
                   <Badge variant={
                     key.vehicle.status === 'AVAILABLE' ? 'success' :
                     key.vehicle.status === 'IN_USE' ? 'warning' :
@@ -128,33 +128,33 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               </div>
               
               <div className="space-y-2 mb-4">
-                <div className="flex items-center text-sm text-gray-600">
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  Tipo: {key.vehicle.vehicleType}
-                  {key.vehicle.color && ` • Color: ${key.vehicle.color}`}
+                  <span className="break-words">Tipo: {key.vehicle.vehicleType}
+                  {key.vehicle.color && ` • Color: ${key.vehicle.color}`}</span>
                 </div>
                 
-                <div className="flex items-center text-sm text-gray-600">
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  {key.location}
+                  <span className="break-words">{key.location}</span>
                 </div>
                 
                 {!isAvailable && currentTransaction && (
-                  <div className="flex items-center text-sm text-gray-600">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    {currentTransaction.user.fullName}
+                    <span className="break-words">{currentTransaction.user.fullName}</span>
                   </div>
                 )}
                 
                 {key.notes && (
-                  <p className="text-xs text-gray-500 mt-2">{key.notes}</p>
+                  <p className="text-xs text-gray-500 mt-2 break-words">{key.notes}</p>
                 )}
               </div>
               
@@ -162,12 +162,12 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               {isAvailable && userRole !== 'DISPATCH' && (
                 <Button
                   onClick={() => handleCheckout(key.id)}
-                  className="w-full"
+                  className="w-full h-9 sm:h-10 text-xs sm:text-sm"
                   size="sm"
                   disabled={isLoading}
                   isLoading={isLoading}
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   Retirar Llave
@@ -175,8 +175,8 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               )}
 
               {!isAvailable && key.status === 'CHECKED_OUT' && currentTransaction && (
-                <div className="w-full p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                  <p className="text-xs font-semibold text-amber-800 mb-1">
+                <div className="w-full p-2 sm:p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                  <p className="text-xs font-semibold text-amber-800 mb-1 break-words">
                     Prestada a: {currentTransaction.user.fullName}
                   </p>
                   <p className="text-xs text-amber-600">
@@ -186,7 +186,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               )}
 
               {key.status === 'MAINTENANCE' && (
-                <div className="w-full p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="w-full p-2 sm:p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-xs font-semibold text-blue-800">
                     🔧 Llave en mantenimiento
                   </p>
@@ -194,8 +194,8 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               )}
 
               {key.status === 'LOST' && (
-                <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-xs font-semibold text-red-800">
+                <div className="w-full p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-xs font-semibold text-red-800 break-words">
                     ⚠️ Llave extraviada - Reportar a administración
                   </p>
                 </div>
