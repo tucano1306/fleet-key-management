@@ -164,18 +164,6 @@ export async function checkinKey(transactionId: string, returnData: ReturnData) 
       return { success: false, error: 'Esta llave ya fue devuelta anteriormente' }
     }
 
-    // Verificar que haya pasado al menos 1 minuto desde el checkout (prevenir errores)
-    const checkoutTime = new Date(transaction.checkoutTime).getTime()
-    const now = Date.now()
-    const minCheckoutDuration = 60 * 1000 // 1 minuto en ms
-
-    if (now - checkoutTime < minCheckoutDuration) {
-      return { 
-        success: false, 
-        error: 'Debe pasar al menos 1 minuto desde el retiro antes de poder devolver la llave' 
-      }
-    }
-
     // Update transaction and key status
     await prisma.$transaction([
       prisma.keyTransaction.update({
