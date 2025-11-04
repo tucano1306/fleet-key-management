@@ -1,8 +1,10 @@
 name: Code Quality
 
+# DESACTIVADO - Solo ejecución manual
 on:
-  pull_request:
-    branches: [ main, develop ]
+  # pull_request:
+  #   branches: [ main, develop ]
+  workflow_dispatch:
 
 jobs:
   security:

@@ -1,8 +1,10 @@
 name: Deploy to Vercel
 
+# DESACTIVADO - Solo ejecución manual
+# Descomentar 'push' cuando estés listo para configurar Vercel
 on:
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
   workflow_dispatch:
 
 env:
