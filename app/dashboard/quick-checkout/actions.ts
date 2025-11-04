@@ -35,13 +35,31 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     if (!session) {
       return {
         success: false,
-        error: 'No autenticado'
+        error: 'No autenticado. Por favor inicia sesión nuevamente.'
+      }
+    }
+
+    // Validar que el keyNumber no esté vacío
+    if (!keyNumber || keyNumber.trim() === '') {
+      return {
+        success: false,
+        error: 'Debes ingresar un número de llave'
+      }
+    }
+
+    // Limpiar y validar formato
+    const cleanKeyNumber = keyNumber.trim().toUpperCase()
+
+    if (cleanKeyNumber.length < 2 || cleanKeyNumber.length > 20) {
+      return {
+        success: false,
+        error: 'El número de llave debe tener entre 2 y 20 caracteres'
       }
     }
 
     const key = await prisma.key.findUnique({
       where: {
-        keyNumber: keyNumber.trim().toUpperCase()
+        keyNumber: cleanKeyNumber
       },
       include: {
         vehicle: {
@@ -126,12 +144,27 @@ export async function quickCheckoutKey(keyId: string) {
   try {
     const session = await getSession()
     if (!session) {
-      return { success: false, error: 'No autenticado' }
+      return { success: false, error: 'No autenticado. Por favor inicia sesión nuevamente.' }
+    }
+
+    // Validar que el keyId no esté vacío
+    if (!keyId || keyId.trim() === '') {
+      return { success: false, error: 'ID de llave no válido' }
+    }
+
+    // Validar que el usuario no sea DISPATCH
+    if (session.role === 'DISPATCH') {
+      return { success: false, error: 'El personal de Dispatch no puede retirar llaves desde aquí' }
     }
 
     // Verify key exists and is available
     const key = await prisma.key.findUnique({
-      where: { id: keyId }
+      where: { id: keyId },
+      include: {
+        keyTransactions: {
+          where: { status: 'CHECKED_OUT' }
+        }
+      }
     })
 
     if (!key) {
@@ -139,7 +172,34 @@ export async function quickCheckoutKey(keyId: string) {
     }
 
     if (key.status !== 'AVAILABLE') {
-      return { success: false, error: 'Esta llave no está disponible' }
+      return { 
+        success: false, 
+        error: `Esta llave no está disponible. Estado: ${
+          key.status === 'CHECKED_OUT' ? 'Prestada' :
+          key.status === 'MAINTENANCE' ? 'En mantenimiento' :
+          key.status === 'LOST' ? 'Extraviada' : key.status
+        }` 
+      }
+    }
+
+    if (key.keyTransactions.length > 0) {
+      return { success: false, error: 'Esta llave ya está en uso por otro usuario' }
+    }
+
+    // Verificar límite de llaves por usuario
+    const userActiveTransactions = await prisma.keyTransaction.count({
+      where: {
+        userId: session.id,
+        status: 'CHECKED_OUT'
+      }
+    })
+
+    const MAX_KEYS_PER_USER = 5
+    if (userActiveTransactions >= MAX_KEYS_PER_USER) {
+      return { 
+        success: false, 
+        error: `Ya tienes ${userActiveTransactions} llaves retiradas. Devuelve alguna antes de retirar más.` 
+      }
     }
 
     // Create transaction and update key status atomically
