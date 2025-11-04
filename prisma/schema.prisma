@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(cuid())
+  employeeId      String           @unique @map("employee_id")
+  fullName        String           @map("full_name")
+  licenseNumber   String?          @unique @map("license_number") // Optional - only for DRIVER/CLEANING_STAFF
+  dispatchId      String?          @unique @map("dispatch_id") // Optional - only for DISPATCH (e.g., "0000")
+  pinHash         String           @map("pin_hash")
+  role            String           @default("DRIVER") // DISPATCH, DRIVER, CLEANING_STAFF
+  isActive        Boolean          @default(true) @map("is_active")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  
+  // Relations
+  keyTransactions KeyTransaction[]
+
+  @@map("users")
+}
+
+model Vehicle {
+  id              String           @id @default(cuid())
+  plateNumber     String           @unique @map("plate_number") // Número de placa
+  vehicleType     String           @map("vehicle_type") // Tipo: Sedan, SUV, Van, Pickup, etc.
+  unitNumber      String           @unique @map("unit_number") // Número de unidad
+  brand           String           // Marca: Toyota, Ford, etc.
+  model           String           // Modelo: Camry, F-150, etc.
+  year            Int              // Año del vehículo
+  color           String?          // Color del vehículo
+  status          String           @default("AVAILABLE") // AVAILABLE, IN_USE, MAINTENANCE, OUT_OF_SERVICE
+  notes           String?          // Notas adicionales
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  
+  // Relations
+  keys            Key[]
+
+  @@map("vehicles")
+}
+
+model Key {
+  id              String           @id @default(cuid())
+  keyNumber       String           @unique @map("key_number")
+  vehicleId       String           @map("vehicle_id")
+  location        String           // Storage location (e.g., "Hook A1", "Cabinet B2")
+  status          String           @default("AVAILABLE") // AVAILABLE, CHECKED_OUT, LOST, MAINTENANCE
+  notes           String?          // Optional notes about the key
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  
+  // Relations
+  vehicle         Vehicle          @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  keyTransactions KeyTransaction[]
+
+  @@map("keys")
+}
+
+model KeyTransaction {
+  id              String           @id @default(cuid())
+  keyId           String           @map("key_id")
+  userId          String           @map("user_id")
+  checkoutTime    DateTime         @default(now()) @map("checkout_time")
+  checkinTime     DateTime?        @map("checkin_time")
+  status          String           @default("CHECKED_OUT") // CHECKED_OUT, CHECKED_IN, OVERDUE
+  notes           String?          // Optional notes for the transaction
+  vehicleCondition String?         @map("vehicle_condition") // Estado del vehículo al devolver: GOOD, MINOR_DAMAGE, MAJOR_DAMAGE, ACCIDENT
+  incidentReport  String?          @map("incident_report") // Descripción de incidentes si los hubo
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  
+  // Relations
+  key             Key              @relation(fields: [keyId], references: [id], onDelete: Cascade)
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("key_transactions")
+  @@index([keyId])
+  @@index([userId])
+  @@index([status])
+}
