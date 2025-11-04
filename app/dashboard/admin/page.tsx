@@ -28,7 +28,7 @@ export default async function AdminPage() {
       user: {
         select: {
           fullName: true,
-          licenseNumber: true,
+          licenseLast4: true,
           employeeId: true
         }
       }
@@ -196,7 +196,7 @@ export default async function AdminPage() {
                           {loan.key.vehicle.brand} {loan.key.vehicle.model} • {loan.key.vehicle.plateNumber}
                         </p>
                         <p className="text-sm text-red-700 mt-1">
-                          Chofer: <strong>{loan.user.fullName}</strong> ({loan.user.licenseNumber})
+                          Chofer: <strong>{loan.user.fullName}</strong> {loan.user.licenseLast4 && `(Lic: ${loan.user.licenseLast4})`}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
                           Retirada: {new Date(loan.checkoutTime).toLocaleString('es-ES')}
@@ -253,7 +253,7 @@ export default async function AdminPage() {
                     </div>
                     <div className="mt-3 pt-3 border-t border-gray-200">
                       <p className="text-sm font-medium text-gray-700">{loan.user.fullName}</p>
-                      <p className="text-xs text-gray-500">Lic: {loan.user.licenseNumber}</p>
+                      {loan.user.licenseLast4 && <p className="text-xs text-gray-500">Lic: {loan.user.licenseLast4}</p>}
                       <p className="text-xs text-gray-500 mt-1">Hace {hoursSince}h</p>
                     </div>
                   </div>

@@ -28,7 +28,7 @@ export default async function HistoryPage() {
       user: {
         select: {
           fullName: true,
-          licenseNumber: true,
+          licenseLast4: true,
           employeeId: true
         }
       },
@@ -157,7 +157,7 @@ export default async function HistoryPage() {
                         <td className="px-4 py-3">
                           <div>
                             <p className="font-medium text-gray-900">{transaction.user.fullName}</p>
-                            <p className="text-xs text-gray-500">{transaction.user.licenseNumber || transaction.user.employeeId}</p>
+                            <p className="text-xs text-gray-500">{transaction.user.licenseLast4 ? `Lic: ${transaction.user.licenseLast4}` : transaction.user.employeeId}</p>
                           </div>
                         </td>
                         <td className="px-4 py-3">
