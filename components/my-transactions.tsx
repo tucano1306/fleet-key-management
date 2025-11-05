@@ -51,7 +51,7 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
       const result = await checkinKey(transactionId, returnFormData)
       
       if (!result.success) {
-        setError(result.error || 'Error al devolver la llave')
+        setError(result.error || 'Error returning key')
       } else {
         setShowReturnForm(null)
         setReturnFormData({ vehicleCondition: 'GOOD', incidentReport: '' })
@@ -79,7 +79,7 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
           <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span>Mis Llaves Retiradas ({transactions.length})</span>
+          <span>My Checked Out Keys ({transactions.length})</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -105,13 +105,13 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                       <span className="text-lg font-semibold text-gray-900">
                         {transaction.key.keyNumber}
                       </span>
-                      <Badge variant="info">Activa</Badge>
+                      <Badge variant="info">Active</Badge>
                     </div>
                     <p className="text-sm font-medium text-gray-700">
                       {transaction.key.vehicle.brand} {transaction.key.vehicle.model} {transaction.key.vehicle.year}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {transaction.key.vehicle.unitNumber} • Placa: {transaction.key.vehicle.plateNumber}
+                      {transaction.key.vehicle.unitNumber} • Plate: {transaction.key.vehicle.plateNumber}
                     </p>
                   </div>
                 </div>
@@ -121,13 +121,13 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
-                    Tipo: {transaction.key.vehicle.vehicleType}
+                    Type: {transaction.key.vehicle.vehicleType}
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Retirada hace {duration}
+                    Checked out {duration} ago
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,11 +139,11 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                 
                 {showReturnForm === transaction.id ? (
                   <div className="space-y-3 mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                    <h4 className="text-sm font-semibold text-gray-900">Registro de Devolución</h4>
+                    <h4 className="text-sm font-semibold text-gray-900">Return Record</h4>
                     
                     <div className="space-y-2">
                       <label className="text-xs font-medium text-gray-700">
-                        Estado del Vehículo *
+                        Vehicle Condition *
                       </label>
                       <select
                         value={returnFormData.vehicleCondition}
@@ -151,22 +151,22 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                         className="w-full h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"
                         disabled={isLoading}
                       >
-                        <option value="GOOD">✅ Buen Estado - Sin incidentes</option>
-                        <option value="MINOR_DAMAGE">⚠️ Daño Menor - Rayones, abolladuras leves</option>
-                        <option value="MAJOR_DAMAGE">🔴 Daño Mayor - Requiere reparación</option>
-                        <option value="ACCIDENT">🚨 Accidente - Requiere atención inmediata</option>
+                        <option value="GOOD">✅ Good Condition - No incidents</option>
+                        <option value="MINOR_DAMAGE">⚠️ Minor Damage - Scratches, light dents</option>
+                        <option value="MAJOR_DAMAGE">🔴 Major Damage - Requires repair</option>
+                        <option value="ACCIDENT">🚨 Accident - Requires immediate attention</option>
                       </select>
                     </div>
                     
                     {returnFormData.vehicleCondition !== 'GOOD' && (
                       <div className="space-y-2">
                         <label className="text-xs font-medium text-gray-700">
-                          Descripción del Incidente *
+                          Incident Description *
                         </label>
                         <textarea
                           value={returnFormData.incidentReport}
                           onChange={(e) => setReturnFormData(prev => ({ ...prev, incidentReport: e.target.value }))}
-                          placeholder="Describa lo sucedido con el vehículo..."
+                          placeholder="Describe what happened with the vehicle..."
                           rows={3}
                           className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 resize-none"
                           disabled={isLoading}
@@ -187,7 +187,7 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        Confirmar Devolución
+                        Confirm Return
                       </Button>
                       <Button
                         onClick={handleCancelReturn}
@@ -195,7 +195,7 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                         size="sm"
                         disabled={isLoading}
                       >
-                        Cancelar
+                        Cancel
                       </Button>
                     </div>
                   </div>
@@ -210,7 +210,7 @@ export function MyTransactions({ transactions }: MyTransactionsProps) {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                     </svg>
-                    Devolver Llave
+                    Return Key
                   </Button>
                 )}
               </div>

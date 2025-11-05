@@ -48,7 +48,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
       const result = await checkoutKey(keyId)
       
       if (!result.success) {
-        setError(result.error || 'Error al retirar la llave')
+        setError(result.error || 'Error checking out key')
       }
       
       setLoadingKeyId(null)
@@ -61,7 +61,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
         <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
         </svg>
-        <p className="mt-4 text-sm text-gray-600">No hay llaves registradas</p>
+        <p className="mt-4 text-sm text-gray-600">No keys registered</p>
       </div>
     )
   }
@@ -84,13 +84,13 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
           const getKeyStatusBadge = () => {
             switch (key.status) {
               case 'AVAILABLE':
-                return <Badge variant="success">Disponible</Badge>
+                return <Badge variant="success">Available</Badge>
               case 'CHECKED_OUT':
-                return <Badge variant="warning">Prestada</Badge>
+                return <Badge variant="warning">Checked Out</Badge>
               case 'MAINTENANCE':
-                return <Badge variant="info">Mantenimiento</Badge>
+                return <Badge variant="info">Maintenance</Badge>
               case 'LOST':
-                return <Badge variant="danger">Extraviada</Badge>
+                return <Badge variant="danger">Lost</Badge>
               default:
                 return <Badge variant="default">{key.status}</Badge>
             }
@@ -111,7 +111,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
                     {key.vehicle.brand} {key.vehicle.model} {key.vehicle.year}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {key.vehicle.unitNumber} • Placa: {key.vehicle.plateNumber}
+                    {key.vehicle.unitNumber} • Plate: {key.vehicle.plateNumber}
                   </p>
                 </div>
                 <div className="sm:ml-2">
@@ -120,9 +120,9 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
                     key.vehicle.status === 'IN_USE' ? 'warning' :
                     key.vehicle.status === 'MAINTENANCE' ? 'info' : 'danger'
                   }>
-                    {key.vehicle.status === 'AVAILABLE' ? 'Disponible' :
-                     key.vehicle.status === 'IN_USE' ? 'En Uso' :
-                     key.vehicle.status === 'MAINTENANCE' ? 'Mantenimiento' : 'Fuera de Servicio'}
+                    {key.vehicle.status === 'AVAILABLE' ? 'Available' :
+                     key.vehicle.status === 'IN_USE' ? 'In Use' :
+                     key.vehicle.status === 'MAINTENANCE' ? 'Maintenance' : 'Out of Service'}
                   </Badge>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
                   <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  <span className="break-words">Tipo: {key.vehicle.vehicleType}
+                  <span className="break-words">Type: {key.vehicle.vehicleType}
                   {key.vehicle.color && ` • Color: ${key.vehicle.color}`}</span>
                 </div>
                 
@@ -170,17 +170,17 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
                   <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Retirar Llave
+                  Check Out Key
                 </Button>
               )}
 
               {!isAvailable && key.status === 'CHECKED_OUT' && currentTransaction && (
                 <div className="w-full p-2 sm:p-3 bg-amber-50 border border-amber-200 rounded-lg">
                   <p className="text-xs font-semibold text-amber-800 mb-1 break-words">
-                    Prestada a: {currentTransaction.user.fullName}
+                    Checked out to: {currentTransaction.user.fullName}
                   </p>
                   <p className="text-xs text-amber-600">
-                    {new Date(currentTransaction.user.employeeId).toLocaleString('es-ES')}
+                    {new Date(currentTransaction.user.employeeId).toLocaleString('en-US')}
                   </p>
                 </div>
               )}
@@ -188,7 +188,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               {key.status === 'MAINTENANCE' && (
                 <div className="w-full p-2 sm:p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-xs font-semibold text-blue-800">
-                    🔧 Llave en mantenimiento
+                    🔧 Key in maintenance
                   </p>
                 </div>
               )}
@@ -196,7 +196,7 @@ export function KeyList({ keys, userId, userRole }: KeyListProps) {
               {key.status === 'LOST' && (
                 <div className="w-full p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
                   <p className="text-xs font-semibold text-red-800 break-words">
-                    ⚠️ Llave extraviada - Reportar a administración
+                    ⚠️ Lost key - Report to administration
                   </p>
                 </div>
               )}
