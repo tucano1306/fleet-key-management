@@ -13,7 +13,7 @@ export default async function AdminDriversPage() {
     redirect('/login')
   }
 
-  // Obtener todos los choferes
+  // Get all drivers
   const drivers = await prisma.user.findMany({
     select: {
       id: true,
@@ -36,7 +36,7 @@ export default async function AdminDriversPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Choferes Registrados</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Registered Drivers</h1>
         <Badge variant="info">{drivers.length} Total</Badge>
       </div>
 
@@ -50,7 +50,7 @@ export default async function AdminDriversPage() {
                   <p className="text-sm text-gray-500 mt-1">{driver.employeeId}</p>
                 </div>
                 <Badge variant={driver.isActive ? 'success' : 'danger'}>
-                  {driver.isActive ? 'Activo' : 'Inactivo'}
+                  {driver.isActive ? 'Active' : 'Inactive'}
                 </Badge>
               </div>
             </CardHeader>
@@ -60,19 +60,19 @@ export default async function AdminDriversPage() {
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
-                  {driver.licenseLast4 ? `Licencia: ${driver.licenseLast4}` : `ID: ${driver.employeeId}`}
+                  {driver.licenseLast4 ? `License: ${driver.licenseLast4}` : `ID: ${driver.employeeId}`}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Transacciones: {driver._count.keyTransactions}
+                  Transactions: {driver._count.keyTransactions}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  Registrado: {new Date(driver.createdAt).toLocaleDateString('es-ES')}
+                  Registered: {new Date(driver.createdAt).toLocaleDateString('en-US')}
                 </div>
               </div>
             </CardContent>
@@ -86,7 +86,7 @@ export default async function AdminDriversPage() {
             <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            <p className="mt-4 text-gray-600">No hay choferes registrados</p>
+            <p className="mt-4 text-gray-600">No drivers registered</p>
           </CardContent>
         </Card>
       )}
