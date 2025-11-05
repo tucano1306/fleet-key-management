@@ -8,11 +8,11 @@ export async function loginAction(
   pin: string
 ) {
   try {
-    // Validaciones de entrada
+    // Input validations
     if (!identifier || !pin) {
       return { 
         success: false, 
-        error: 'Todos los campos son obligatorios' 
+        error: 'All fields are required' 
       }
     }
 
@@ -20,39 +20,39 @@ export async function loginAction(
     identifier = identifier.trim()
     pin = pin.trim()
 
-    // Validaciones específicas por tipo de usuario
+    // User type specific validations
     if (userType === 'DISPATCH') {
       if (identifier.length === 0) {
-        return { success: false, error: 'El ID de Dispatch no puede estar vacío' }
+        return { success: false, error: 'Dispatch ID cannot be empty' }
       }
     } else {
-      // Validar formato de licenseLast4 para DRIVER
+      // Validate licenseLast4 format for DRIVER
       if (identifier.length !== 4) {
         return { 
           success: false, 
-          error: 'Los últimos 4 dígitos de licencia deben ser exactamente 4 caracteres' 
+          error: 'Last 4 digits of license must be exactly 4 characters' 
         }
       }
       if (!/^\d{4}$/.test(identifier)) {
         return { 
           success: false, 
-          error: 'Los últimos 4 dígitos de licencia deben ser solo números' 
+          error: 'Last 4 digits of license must be numbers only' 
         }
       }
     }
 
-    // Validar PIN
+    // Validate PIN
     if (pin.length < 4 || pin.length > 6) {
       return { 
         success: false, 
-        error: 'El PIN debe tener entre 4 y 6 dígitos' 
+        error: 'PIN must be between 4 and 6 digits' 
       }
     }
 
     if (!/^\d+$/.test(pin)) {
       return { 
         success: false, 
-        error: 'El PIN solo puede contener números' 
+        error: 'PIN can only contain numbers' 
       }
     }
     
@@ -68,8 +68,8 @@ export async function loginAction(
       return { 
         success: false, 
         error: userType === 'DISPATCH' 
-          ? 'ID de Dispatch o PIN incorrectos' 
-          : 'Número de licencia o PIN incorrectos' 
+          ? 'Incorrect Dispatch ID or PIN' 
+          : 'Incorrect license number or PIN' 
       }
     }
     
@@ -81,6 +81,6 @@ export async function loginAction(
     }
   } catch (error) {
     console.error('Login error:', error)
-    return { success: false, error: 'Error al procesar la solicitud. Intenta nuevamente.' }
+    return { success: false, error: 'Error processing request. Please try again.' }
   }
 }

@@ -77,15 +77,15 @@ export default async function DashboardPage() {
                   </svg>
                 </div>
                 <div className="flex-1 text-white">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold">Retiro Rápido</h3>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold">Quick Checkout</h3>
                   <p className="text-xs sm:text-sm text-white/90 mt-1">
-                    Proceso optimizado en segundos ⚡
+                    Optimized process in seconds ⚡
                   </p>
                 </div>
               </div>
               <Link href="/dashboard/quick-checkout" className="w-full sm:w-auto">
                 <Button size="lg" className="bg-white text-success-600 hover:bg-gray-50 h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base md:text-lg font-bold shadow-lg hover:shadow-xl w-full sm:w-auto rounded-xl transition-all transform hover:scale-[1.02]">
-                  Iniciar →
+                  Start →
                 </Button>
               </Link>
             </div>
@@ -119,7 +119,7 @@ export default async function DashboardPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">Disponibles</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">Available</p>
               <p className="text-2xl sm:text-3xl font-bold text-success-600">{availableKeys}</p>
             </div>
           </CardContent>
@@ -134,7 +134,7 @@ export default async function DashboardPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">Prestadas</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">Checked Out</p>
               <p className="text-2xl sm:text-3xl font-bold text-warning-600">{checkedOutKeys}</p>
             </div>
           </CardContent>
@@ -150,7 +150,7 @@ export default async function DashboardPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1 leading-tight">Mantenimiento</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1 leading-tight">Maintenance</p>
               <p className="text-2xl sm:text-3xl font-bold text-blue-600">{maintenanceKeys}</p>
             </div>
           </CardContent>
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">Extraviadas</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">Lost</p>
               <p className="text-2xl sm:text-3xl font-bold text-danger-600">{lostKeys}</p>
             </div>
           </CardContent>
@@ -180,7 +180,7 @@ export default async function DashboardPage() {
       {/* All Keys */}
       <Card>
         <CardHeader>
-          <CardTitle>Todas las Llaves</CardTitle>
+          <CardTitle>All Keys</CardTitle>
         </CardHeader>
         <CardContent>
           <KeyList keys={keys} userId={session.id} userRole={session.role} />
