@@ -35,7 +35,7 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     if (!session) {
       return {
         success: false,
-        error: 'No autenticado. Por favor inicia sesión nuevamente.'
+        error: 'Not authenticated. Please log in again.'
       }
     }
 
@@ -43,7 +43,7 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     if (!keyNumber || keyNumber.trim() === '') {
       return {
         success: false,
-        error: 'Debes ingresar un número de llave'
+        error: 'You must enter a key number'
       }
     }
 
@@ -53,7 +53,7 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     if (cleanKeyNumber.length < 2 || cleanKeyNumber.length > 20) {
       return {
         success: false,
-        error: 'El número de llave debe tener entre 2 y 20 caracteres'
+        error: 'Key number must be between 2 and 20 characters'
       }
     }
 
@@ -90,7 +90,7 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     if (!key) {
       return {
         success: false,
-        error: 'No se encontró ninguna llave con ese número'
+        error: 'No key found with that number'
       }
     }
 
@@ -117,7 +117,7 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     if (keyStatus === 'CHECKED_OUT_BY_OTHER') {
       return {
         success: false,
-        error: `Esta llave ya fue retirada por ${currentTransaction?.user.fullName}`
+        error: `This key was already checked out by ${currentTransaction?.user.fullName}`
       }
     }
 
@@ -135,7 +135,7 @@ export async function searchKeyByNumber(keyNumber: string): Promise<KeyInfo> {
     console.error('Error searching key:', error)
     return {
       success: false,
-      error: 'Error al buscar la llave'
+      error: 'Error searching for key'
     }
   }
 }
@@ -144,17 +144,17 @@ export async function quickCheckoutKey(keyId: string) {
   try {
     const session = await getSession()
     if (!session) {
-      return { success: false, error: 'No autenticado. Por favor inicia sesión nuevamente.' }
+      return { success: false, error: 'Not authenticated. Please log in again.' }
     }
 
     // Validar que el keyId no esté vacío
     if (!keyId || keyId.trim() === '') {
-      return { success: false, error: 'ID de llave no válido' }
+      return { success: false, error: 'Invalid key ID' }
     }
 
     // Validar que el usuario no sea DISPATCH
     if (session.role === 'DISPATCH') {
-      return { success: false, error: 'El personal de Dispatch no puede retirar llaves desde aquí' }
+      return { success: false, error: 'Dispatch personnel cannot check out keys from here' }
     }
 
     // Verify key exists and is available
@@ -168,22 +168,22 @@ export async function quickCheckoutKey(keyId: string) {
     })
 
     if (!key) {
-      return { success: false, error: 'Llave no encontrada' }
+      return { success: false, error: 'Key not found' }
     }
 
     if (key.status !== 'AVAILABLE') {
       return { 
         success: false, 
-        error: `Esta llave no está disponible. Estado: ${
-          key.status === 'CHECKED_OUT' ? 'Prestada' :
-          key.status === 'MAINTENANCE' ? 'En mantenimiento' :
-          key.status === 'LOST' ? 'Extraviada' : key.status
+        error: `This key is not available. Status: ${
+          key.status === 'CHECKED_OUT' ? 'Checked Out' :
+          key.status === 'MAINTENANCE' ? 'In Maintenance' :
+          key.status === 'LOST' ? 'Lost' : key.status
         }` 
       }
     }
 
     if (key.keyTransactions.length > 0) {
-      return { success: false, error: 'Esta llave ya está en uso por otro usuario' }
+      return { success: false, error: 'This key is already in use by another user' }
     }
 
     // Verificar límite de llaves por usuario
@@ -198,7 +198,7 @@ export async function quickCheckoutKey(keyId: string) {
     if (userActiveTransactions >= MAX_KEYS_PER_USER) {
       return { 
         success: false, 
-        error: `Ya tienes ${userActiveTransactions} llaves retiradas. Devuelve alguna antes de retirar más.` 
+        error: `You already have ${userActiveTransactions} keys checked out. Return some before checking out more.` 
       }
     }
 
@@ -224,7 +224,7 @@ export async function quickCheckoutKey(keyId: string) {
     return { success: true }
   } catch (error) {
     console.error('Error in quick checkout:', error)
-    return { success: false, error: 'Error al registrar el retiro de llave' }
+    return { success: false, error: 'Error registering key checkout' }
   }
 }
 
@@ -232,7 +232,7 @@ export async function quickCheckinKey(transactionId: string) {
   try {
     const session = await getSession()
     if (!session) {
-      return { success: false, error: 'No autenticado' }
+      return { success: false, error: 'Not authenticated' }
     }
 
     // Verify transaction exists and belongs to current user
@@ -242,15 +242,15 @@ export async function quickCheckinKey(transactionId: string) {
     })
 
     if (!transaction) {
-      return { success: false, error: 'Transacción no encontrada' }
+      return { success: false, error: 'Transaction not found' }
     }
 
     if (transaction.userId !== session.id) {
-      return { success: false, error: 'No tienes permiso para devolver esta llave' }
+      return { success: false, error: 'You do not have permission to return this key' }
     }
 
     if (transaction.status !== 'CHECKED_OUT') {
-      return { success: false, error: 'Esta transacción ya fue completada' }
+      return { success: false, error: 'This transaction has already been completed' }
     }
 
     // Update transaction and key status atomically
@@ -275,7 +275,7 @@ export async function quickCheckinKey(transactionId: string) {
     return { success: true }
   } catch (error) {
     console.error('Error in quick checkin:', error)
-    return { success: false, error: 'Error al registrar la devolución de llave' }
+    return { success: false, error: 'Error registering key return' }
   }
 }
 
