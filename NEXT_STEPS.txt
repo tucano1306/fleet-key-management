@@ -1,0 +1,149 @@
+═══════════════════════════════════════════════════════════════
+  ✅ PROYECTO CREADO EN VERCEL
+═══════════════════════════════════════════════════════════════
+
+Proyecto: app-key
+URL: https://vercel.com/tucano0109-5495s-projects/app-key
+
+
+═══════════════════════════════════════════════════════════════
+  📋 PASOS SIGUIENTES (En orden)
+═══════════════════════════════════════════════════════════════
+
+PASO 1: Crear Base de Datos PostgreSQL
+────────────────────────────────────────────────
+
+1. En Vercel Dashboard, click "Storage" (menú superior)
+2. Click "Create Database"
+3. Selecciona "Postgres"
+4. Configuración:
+   - Database Name: fleet-key-db
+   - Region: Washington, D.C., USA (iad1)
+5. Click "Create"
+6. ✅ Espera que se cree (30 segundos)
+
+
+PASO 2: Conectar Database al Proyecto
+────────────────────────────────────────────────
+
+1. Ve a tu proyecto: app-key
+2. Click "Storage" tab
+3. Click "Connect Store"
+4. Selecciona "fleet-key-db"
+5. Click "Connect"
+6. ✅ Vercel agregará automáticamente las variables
+
+
+PASO 3: Configurar Variables de Entorno
+────────────────────────────────────────────────
+
+1. En tu proyecto, ve a "Settings"
+2. Click "Environment Variables"
+3. Agrega estas 2 variables:
+
+   Variable 1:
+   ┌─────────────────────────────────────┐
+   │ Key: NEXTAUTH_SECRET                │
+   │ Value: [genera con comando abajo]   │
+   │ Environments: ☑ Production          │
+   │               ☑ Preview             │
+   │               ☑ Development         │
+   └─────────────────────────────────────┘
+
+   Variable 2:
+   ┌─────────────────────────────────────┐
+   │ Key: NEXTAUTH_URL                   │
+   │ Value: https://app-key.vercel.app   │
+   │ Environments: ☑ Production          │
+   └─────────────────────────────────────┘
+
+4. Click "Save" en cada una
+
+
+💡 GENERAR NEXTAUTH_SECRET:
+────────────────────────────────────────────────
+
+En PowerShell local ejecuta:
+
+[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+
+Copia el resultado y úsalo como valor de NEXTAUTH_SECRET
+
+
+PASO 4: Redeploy
+────────────────────────────────────────────────
+
+En tu terminal, ejecuta:
+
+vercel --prod
+
+Esto hará el deploy con todas las variables configuradas.
+
+
+PASO 5: Ejecutar Migraciones
+────────────────────────────────────────────────
+
+Después del deploy exitoso, en tu terminal:
+
+# Descargar variables de entorno
+vercel env pull .env.production
+
+# Ejecutar migraciones
+npx prisma migrate deploy
+
+# Cargar datos de prueba
+npx prisma db seed
+
+
+═══════════════════════════════════════════════════════════════
+  ✅ CREDENCIALES DE PRUEBA (después del seed)
+═══════════════════════════════════════════════════════════════
+
+DISPATCH (Admin):
+  Dispatch ID: 0000
+  PIN: 0000
+
+DRIVER (Chofer):
+  Last 4 License: 5678
+  PIN: 1234
+
+DRIVER (Chofer 2):
+  Last 4 License: 4321
+  PIN: 5678
+
+CLEANING STAFF:
+  Last 4 License: 3344
+  PIN: 9012
+
+
+═══════════════════════════════════════════════════════════════
+  🎯 RESUMEN DE COMANDOS
+═══════════════════════════════════════════════════════════════
+
+# Generar secret
+[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+
+# Redeploy después de configurar variables
+vercel --prod
+
+# Descargar env y ejecutar migraciones
+vercel env pull .env.production
+npx prisma migrate deploy
+npx prisma db seed
+
+# Ver logs
+vercel logs --follow
+
+# Ver deployments
+vercel ls
+
+
+═══════════════════════════════════════════════════════════════
+
+Dashboard del proyecto:
+https://vercel.com/tucano0109-5495s-projects/app-key
+
+Cuando termines, tu app estará en:
+https://app-key.vercel.app (o similar)
+
+═══════════════════════════════════════════════════════════════
