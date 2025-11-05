@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { getSession, destroySession } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 
+export const dynamic = 'force-dynamic'
+
 async function logoutAction() {
   'use server'
   await destroySession()
