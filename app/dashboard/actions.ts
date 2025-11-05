@@ -13,17 +13,17 @@ export async function checkoutKey(keyId: string) {
   try {
     const session = await getSession()
     if (!session) {
-      return { success: false, error: 'No autorizado. Por favor inicia sesión nuevamente.' }
+      return { success: false, error: 'Not authorized. Please log in again.' }
     }
 
     // Validar que el keyId no esté vacío
     if (!keyId || keyId.trim() === '') {
-      return { success: false, error: 'ID de llave no válido' }
+      return { success: false, error: 'Invalid key ID' }
     }
 
     // Validar que el usuario no sea DISPATCH (solo DRIVER y CLEANING_STAFF pueden retirar)
     if (session.role === 'DISPATCH') {
-      return { success: false, error: 'El personal de Dispatch no puede retirar llaves' }
+      return { success: false, error: 'Dispatch personnel cannot check out keys' }
     }
 
     // Check if key exists and is available
@@ -37,22 +37,22 @@ export async function checkoutKey(keyId: string) {
     })
 
     if (!key) {
-      return { success: false, error: 'Llave no encontrada' }
+      return { success: false, error: 'Key not found' }
     }
 
     if (key.status !== 'AVAILABLE') {
       return { 
         success: false, 
-        error: `La llave no está disponible. Estado actual: ${
-          key.status === 'CHECKED_OUT' ? 'Prestada' :
-          key.status === 'MAINTENANCE' ? 'En mantenimiento' :
-          key.status === 'LOST' ? 'Extraviada' : key.status
+        error: `The key is not available. Current status: ${
+          key.status === 'CHECKED_OUT' ? 'Checked Out' :
+          key.status === 'MAINTENANCE' ? 'In Maintenance' :
+          key.status === 'LOST' ? 'Lost' : key.status
         }` 
       }
     }
 
     if (key.keyTransactions.length > 0) {
-      return { success: false, error: 'La llave ya está en uso por otro usuario' }
+      return { success: false, error: 'The key is already in use by another user' }
     }
 
     // Verificar si el usuario ya tiene llaves prestadas (opcional: límite de llaves por usuario)
@@ -67,7 +67,7 @@ export async function checkoutKey(keyId: string) {
     if (userActiveTransactions >= MAX_KEYS_PER_USER) {
       return { 
         success: false, 
-        error: `Ya tienes ${userActiveTransactions} llaves retiradas. Devuelve alguna antes de retirar más.` 
+        error: `You already have ${userActiveTransactions} keys checked out. Return some before checking out more.` 
       }
     }
 
@@ -94,7 +94,7 @@ export async function checkoutKey(keyId: string) {
     return { success: true }
   } catch (error) {
     console.error('Checkout error:', error)
-    return { success: false, error: 'Error al retirar la llave. Intenta nuevamente.' }
+    return { success: false, error: 'Error checking out key. Please try again.' }
   }
 }
 
@@ -102,18 +102,18 @@ export async function checkinKey(transactionId: string, returnData: ReturnData) 
   try {
     const session = await getSession()
     if (!session) {
-      return { success: false, error: 'No autorizado. Por favor inicia sesión nuevamente.' }
+      return { success: false, error: 'Not authorized. Please log in again.' }
     }
 
     // Validar que el transactionId no esté vacío
     if (!transactionId || transactionId.trim() === '') {
-      return { success: false, error: 'ID de transacción no válido' }
+      return { success: false, error: 'Invalid transaction ID' }
     }
 
     // Validar condición del vehículo
     const validConditions = ['GOOD', 'MINOR_DAMAGE', 'MAJOR_DAMAGE', 'ACCIDENT']
     if (!returnData.vehicleCondition || !validConditions.includes(returnData.vehicleCondition)) {
-      return { success: false, error: 'Debe seleccionar una condición del vehículo válida' }
+      return { success: false, error: 'You must select a valid vehicle condition' }
     }
 
     // Validar reporte de incidente si la condición no es GOOD
@@ -121,21 +121,21 @@ export async function checkinKey(transactionId: string, returnData: ReturnData) 
       if (!returnData.incidentReport || returnData.incidentReport.trim() === '') {
         return { 
           success: false, 
-          error: 'Debes proporcionar un reporte del incidente cuando el vehículo no está en buenas condiciones' 
+          error: 'You must provide an incident report when the vehicle is not in good condition' 
         }
       }
 
       if (returnData.incidentReport.trim().length < 10) {
         return { 
           success: false, 
-          error: 'El reporte del incidente debe tener al menos 10 caracteres' 
+          error: 'The incident report must be at least 10 characters long' 
         }
       }
 
       if (returnData.incidentReport.length > 1000) {
         return { 
           success: false, 
-          error: 'El reporte del incidente no puede exceder 1000 caracteres' 
+          error: 'The incident report cannot exceed 1000 characters' 
         }
       }
     }
@@ -153,15 +153,15 @@ export async function checkinKey(transactionId: string, returnData: ReturnData) 
     })
 
     if (!transaction) {
-      return { success: false, error: 'Transacción no encontrada' }
+      return { success: false, error: 'Transaction not found' }
     }
 
     if (transaction.userId !== session.id) {
-      return { success: false, error: 'No estás autorizado para devolver esta llave' }
+      return { success: false, error: 'You are not authorized to return this key' }
     }
 
     if (transaction.status !== 'CHECKED_OUT') {
-      return { success: false, error: 'Esta llave ya fue devuelta anteriormente' }
+      return { success: false, error: 'This key was already returned previously' }
     }
 
     // Update transaction and key status
@@ -191,6 +191,6 @@ export async function checkinKey(transactionId: string, returnData: ReturnData) 
     return { success: true }
   } catch (error) {
     console.error('Checkin error:', error)
-    return { success: false, error: 'Error al devolver la llave. Intenta nuevamente.' }
+    return { success: false, error: 'Error returning key. Please try again.' }
   }
 }
