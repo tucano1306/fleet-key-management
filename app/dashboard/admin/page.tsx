@@ -249,12 +249,12 @@ export default async function AdminPage() {
                           {loan.key.vehicle.unitNumber} • {loan.key.vehicle.plateNumber}
                         </p>
                       </div>
-                      {isOverdue && <Badge variant="danger">Vencida</Badge>}
+                      {isOverdue && <Badge variant="danger">Overdue</Badge>}
                     </div>
                     <div className="mt-3 pt-3 border-t border-gray-200">
                       <p className="text-sm font-medium text-gray-700">{loan.user.fullName}</p>
                       {loan.user.licenseLast4 && <p className="text-xs text-gray-500">Lic: {loan.user.licenseLast4}</p>}
-                      <p className="text-xs text-gray-500 mt-1">Hace {hoursSince}h</p>
+                      <p className="text-xs text-gray-500 mt-1">{hoursSince}h ago</p>
                     </div>
                   </div>
                 )
@@ -272,10 +272,10 @@ export default async function AdminPage() {
               <svg className="w-6 h-6 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              Últimas Devoluciones
+              Recent Returns
             </span>
             <Link href="/dashboard/admin/history">
-              <Badge variant="info" className="cursor-pointer">Ver Todo</Badge>
+              <Badge variant="info" className="cursor-pointer">View All</Badge>
             </Link>
           </CardTitle>
         </CardHeader>
@@ -284,11 +284,11 @@ export default async function AdminPage() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="text-left p-3 font-semibold text-gray-700">Llave</th>
-                  <th className="text-left p-3 font-semibold text-gray-700">Vehículo</th>
-                  <th className="text-left p-3 font-semibold text-gray-700">Chofer</th>
-                  <th className="text-left p-3 font-semibold text-gray-700">Devuelto</th>
-                  <th className="text-left p-3 font-semibold text-gray-700">Estado</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Key</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Vehicle</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Driver</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Returned</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -303,7 +303,7 @@ export default async function AdminPage() {
                     </td>
                     <td className="p-3">{transaction.user.fullName}</td>
                     <td className="p-3 text-xs text-gray-600">
-                      {transaction.checkinTime ? new Date(transaction.checkinTime).toLocaleString('es-ES') : '-'}
+                      {transaction.checkinTime ? new Date(transaction.checkinTime).toLocaleString('en-US') : '-'}
                     </td>
                     <td className="p-3">
                       {transaction.vehicleCondition && (
@@ -312,10 +312,10 @@ export default async function AdminPage() {
                           transaction.vehicleCondition === 'MINOR_DAMAGE' ? 'warning' :
                           'danger'
                         }>
-                          {transaction.vehicleCondition === 'GOOD' ? '✅ Bien' :
-                           transaction.vehicleCondition === 'MINOR_DAMAGE' ? '⚠️ Daño Menor' :
-                           transaction.vehicleCondition === 'MAJOR_DAMAGE' ? '🔴 Daño Mayor' :
-                           '🚨 Accidente'}
+                          {transaction.vehicleCondition === 'GOOD' ? '✅ Good' :
+                           transaction.vehicleCondition === 'MINOR_DAMAGE' ? '⚠️ Minor Damage' :
+                           transaction.vehicleCondition === 'MAJOR_DAMAGE' ? '🔴 Major Damage' :
+                           '🚨 Accident'}
                         </Badge>
                       )}
                     </td>
