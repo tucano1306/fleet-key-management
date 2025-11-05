@@ -55,6 +55,12 @@ jobs:
     - name: Generate Prisma Client
       run: npx prisma generate
 
+    - name: Debug - List migration files
+      run: |
+        echo "Listing migration files:"
+        ls -la prisma/migrations/ || echo "No migrations folder"
+        ls -la prisma/migrations/20251105000000_init/ || echo "No init migration"
+
     - name: Validate Prisma Schema
       run: npx prisma validate
 
