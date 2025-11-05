@@ -1,6 +1,28 @@
 # Guía de Inicio Rápido
 
-## 🚀 Configuración Inicial (5 minutos)
+## 🚀 Deploy desde Terminal con Vercel CLI
+
+### Instalación Rápida
+
+```powershell
+# 1. Instalar Vercel CLI
+npm install -g vercel
+
+# 2. Login
+vercel login
+
+# 3. Deploy a preview (testing)
+vercel
+
+# 4. Deploy a producción
+vercel --prod
+```
+
+**Ver comandos completos**: [COMANDOS_VERCEL.md](./COMANDOS_VERCEL.md)
+
+---
+
+## 🚀 Configuración Local Inicial (5 minutos)
 
 ### 1. Instalar PostgreSQL
 
