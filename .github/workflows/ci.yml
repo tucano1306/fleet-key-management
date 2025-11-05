@@ -83,9 +83,6 @@ jobs:
     - name: Test database seed
       run: npx tsx prisma/seed.ts
       continue-on-error: true
-          echo "❌ Build failed"
-          exit 1
-        fi
 
   lint:
     runs-on: ubuntu-latest
