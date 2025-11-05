@@ -84,13 +84,13 @@ export default async function AdminPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Panel de Administración</h1>
-          <p className="text-gray-600 mt-1">Vista en tiempo real del sistema de llaves</p>
+          <h1 className="text-3xl font-bold text-gray-900">Administration Panel</h1>
+          <p className="text-gray-600 mt-1">Real-time view of the key management system</p>
         </div>
         <div className="flex space-x-2">
           <Link href="/dashboard/admin/reports">
             <Badge variant="info" className="cursor-pointer px-4 py-2">
-              📊 Ver Reportes
+              📊 View Reports
             </Badge>
           </Link>
         </div>
@@ -106,7 +106,7 @@ export default async function AdminPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-gray-600">Total Llaves</p>
+              <p className="text-sm font-medium text-gray-600">Total Keys</p>
               <p className="text-2xl font-bold text-gray-900 mt-1">{stats.totalKeys}</p>
             </div>
           </CardContent>
@@ -120,7 +120,7 @@ export default async function AdminPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-orange-800">Prestadas</p>
+              <p className="text-sm font-medium text-orange-800">Checked Out</p>
               <p className="text-2xl font-bold text-orange-600 mt-1">{stats.activeLoans}</p>
             </div>
           </CardContent>
@@ -134,7 +134,7 @@ export default async function AdminPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <p className={`text-sm font-medium ${overdueLoans.length > 0 ? 'text-red-800' : 'text-gray-600'}`}>Vencidas</p>
+              <p className={`text-sm font-medium ${overdueLoans.length > 0 ? 'text-red-800' : 'text-gray-600'}`}>Overdue</p>
               <p className={`text-2xl font-bold mt-1 ${overdueLoans.length > 0 ? 'text-red-600' : 'text-gray-900'}`}>{stats.overdueLoans}</p>
             </div>
           </CardContent>
@@ -148,7 +148,7 @@ export default async function AdminPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-gray-600">Disponibles</p>
+              <p className="text-sm font-medium text-gray-600">Available</p>
               <p className="text-2xl font-bold text-green-600 mt-1">{stats.availableKeys}</p>
             </div>
           </CardContent>
@@ -162,7 +162,7 @@ export default async function AdminPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-gray-600">Choferes</p>
+              <p className="text-sm font-medium text-gray-600">Drivers</p>
               <p className="text-2xl font-bold text-purple-600 mt-1">{stats.totalDrivers}</p>
             </div>
           </CardContent>
@@ -177,7 +177,7 @@ export default async function AdminPage() {
               <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
-              ⚠️ Alertas: Llaves No Devueltas ({overdueLoans.length})
+              ⚠️ Alerts: Unreturned Keys ({overdueLoans.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -190,16 +190,16 @@ export default async function AdminPage() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
                           <span className="font-semibold text-gray-900">{loan.key.keyNumber}</span>
-                          <Badge variant="danger">Vencida hace {hoursSince}h</Badge>
+                          <Badge variant="danger">Overdue {hoursSince}h ago</Badge>
                         </div>
                         <p className="text-sm text-gray-700">
                           {loan.key.vehicle.brand} {loan.key.vehicle.model} • {loan.key.vehicle.plateNumber}
                         </p>
                         <p className="text-sm text-red-700 mt-1">
-                          Chofer: <strong>{loan.user.fullName}</strong> {loan.user.licenseLast4 && `(Lic: ${loan.user.licenseLast4})`}
+                          Driver: <strong>{loan.user.fullName}</strong> {loan.user.licenseLast4 && `(Lic: ${loan.user.licenseLast4})`}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                          Retirada: {new Date(loan.checkoutTime).toLocaleString('es-ES')}
+                          Checked out: {new Date(loan.checkoutTime).toLocaleString('en-US')}
                         </p>
                       </div>
                     </div>
@@ -219,9 +219,9 @@ export default async function AdminPage() {
               <svg className="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Llaves Prestadas en Tiempo Real
+              Keys Checked Out in Real Time
             </span>
-            <Badge variant="warning">{activeLoans.length} Activas</Badge>
+            <Badge variant="warning">{activeLoans.length} Active</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -230,7 +230,7 @@ export default async function AdminPage() {
               <svg className="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p>Todas las llaves han sido devueltas</p>
+              <p>All keys have been returned</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
