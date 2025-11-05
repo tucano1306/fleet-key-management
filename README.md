@@ -4,7 +4,9 @@
 [![Deploy](https://github.com/tucano1306/fleet-key-management/actions/workflows/deploy.yml/badge.svg)](https://github.com/tucano1306/fleet-key-management/actions/workflows/deploy.yml)
 [![Code Quality](https://github.com/tucano1306/fleet-key-management/actions/workflows/code-quality.yml/badge.svg)](https://github.com/tucano1306/fleet-key-management/actions/workflows/code-quality.yml)
 
-Sistema completo de gestión de llaves de vehículos con autenticación basada en PIN, desarrollado con Next.js 14, TypeScript, Prisma ORM y SQLite.
+Sistema completo de gestión de llaves de vehículos con autenticación basada en PIN, desarrollado con Next.js 14, TypeScript, Prisma ORM y PostgreSQL.
+
+**🚀 [Deploy en Vercel](./VERCEL_QUICKSTART.md)** | **📚 [Documentación Completa](./DEPLOYMENT.md)**
 
 ## 🚀 Características
 
@@ -42,9 +44,12 @@ npm install
 cp .env.example .env
 ```
 
-Editar `.env` y configurar la URL de PostgreSQL:
+Editar `.env` y configurar:
 ```env
-DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/key_management?schema=public"
+# Development - PostgreSQL local o SQLite
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/fleet_key_db?schema=public"
+# O usar SQLite: DATABASE_URL="file:./dev.db"
+
 NEXTAUTH_SECRET="tu-secreto-aqui"
 NEXTAUTH_URL="http://localhost:3000"
 ```
@@ -170,32 +175,52 @@ npm run db:seed      # Poblar base de datos
 npm run db:studio    # Abrir Prisma Studio
 ```
 
-## 🚢 Despliegue
+## 🚢 Deployment en Vercel
 
-### Preparación para Producción
+### 🚀 Deployment Rápido (5 minutos)
 
-1. Configurar variables de entorno de producción
-2. Ejecutar build:
-```bash
-npm run build
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tucano1306/fleet-key-management)
 
-3. Ejecutar migraciones en producción:
-```bash
-npx prisma migrate deploy
-```
+**Ver guía completa**: [VERCEL_QUICKSTART.md](./VERCEL_QUICKSTART.md)
 
-4. Iniciar servidor:
-```bash
-npm start
-```
+**Pasos resumidos**:
 
-### Plataformas Recomendadas
+1. **Crear Database en Vercel**
+   - Dashboard → Storage → Create Database → Postgres
+   - Nombre: `fleet-key-db`
 
-- **Vercel**: Despliegue optimizado para Next.js
+2. **Importar desde GitHub**
+   - Vercel Dashboard → Add New Project
+   - Importar: `tucano1306/fleet-key-management`
+
+3. **Conectar Database**
+   - Storage tab → Connect Store
+   - Vercel conecta automáticamente las variables
+
+4. **Configurar Variables**
+   ```bash
+   NEXTAUTH_SECRET=genera-con-comando
+   NEXTAUTH_URL=https://tu-proyecto.vercel.app
+   ```
+
+5. **Ejecutar Migraciones**
+   ```bash
+   npm i -g vercel
+   vercel login && vercel link
+   vercel env pull .env.production
+   npx prisma migrate deploy
+   npx prisma db seed
+   ```
+
+6. **¡Listo!** → `https://tu-proyecto.vercel.app`
+
+### Otras Plataformas
+
 - **Railway**: PostgreSQL + Next.js en un solo lugar
 - **Render**: Alternativa con PostgreSQL incluido
 - **AWS/GCP/Azure**: Para mayor control
+
+**Documentación completa**: [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ## 🤝 Contribuir
 

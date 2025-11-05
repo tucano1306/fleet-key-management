@@ -2,6 +2,7 @@
 .env
 .env.local
 .env*.local
+.env.production
 
 # Dependencies
 node_modules
@@ -35,4 +36,8 @@ yarn-error.log*
 next-env.d.ts
 
 # Prisma
-prisma/migrations/**/migration.sql
+dev.db
+dev.db-journal
+
+# VS Code
+.vscode/
