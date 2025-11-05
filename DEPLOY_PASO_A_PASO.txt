@@ -1,0 +1,357 @@
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   🚀 DEPLOYMENT EN VERCEL - PASO A PASO                    │
+│                                                             │
+│   Fleet Key Management System                              │
+│   Tiempo estimado: 5-10 minutos                            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 1: Crear Cuenta en Vercel (si no tienes)
+═══════════════════════════════════════════════════════════════
+
+1. Ve a: https://vercel.com
+2. Click en "Sign Up"
+3. Conecta con tu cuenta de GitHub
+4. Autoriza Vercel para acceder a tus repositorios
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 2: Crear Base de Datos PostgreSQL en Vercel
+═══════════════════════════════════════════════════════════════
+
+1. Ve a tu Dashboard: https://vercel.com/dashboard
+
+2. Click en "Storage" (en el menú superior)
+
+3. Click en "Create Database"
+
+4. Selecciona "Postgres"
+
+5. Configuración:
+   ┌──────────────────────────────────────┐
+   │ Database Name: fleet-key-db          │
+   │ Region: [Selecciona la más cercana]  │
+   │ Plan: Hobby (gratis para desarrollo) │
+   └──────────────────────────────────────┘
+
+6. Click "Create"
+
+7. ✅ Vercel generará automáticamente las variables:
+   - POSTGRES_URL
+   - POSTGRES_PRISMA_URL
+   - POSTGRES_URL_NON_POOLING
+   - POSTGRES_USER
+   - POSTGRES_PASSWORD
+   - POSTGRES_DATABASE
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 3: Importar Proyecto desde GitHub
+═══════════════════════════════════════════════════════════════
+
+1. En Vercel Dashboard, click "Add New..."
+
+2. Selecciona "Project"
+
+3. Busca tu repositorio:
+   📦 tucano1306/fleet-key-management
+
+4. Click "Import"
+
+5. Configuración del Proyecto:
+   ┌─────────────────────────────────────────────┐
+   │ Framework Preset: Next.js (auto-detectado) │
+   │ Root Directory: ./                          │
+   │ Build Command: npm run build (default)      │
+   │ Output Directory: .next (default)           │
+   └─────────────────────────────────────────────┘
+
+6. ⚠️ NO HAGAS DEPLOY AÚN - Primero configura variables
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 4: Configurar Variables de Entorno
+═══════════════════════════════════════════════════════════════
+
+En la sección "Environment Variables" ANTES de deployar:
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│ Variable 1:                                                 │
+│   Key:   NEXTAUTH_SECRET                                    │
+│   Value: [Genera uno - ver instrucciones abajo]            │
+│   Environments: ☑ Production ☑ Preview ☑ Development      │
+│                                                             │
+│ Variable 2:                                                 │
+│   Key:   NEXTAUTH_URL                                       │
+│   Value: https://tu-proyecto.vercel.app                     │
+│   Environments: ☑ Production                               │
+│   (Vercel te dará esta URL después del deploy)             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+💡 Para generar NEXTAUTH_SECRET:
+
+   Opción A - PowerShell (Windows):
+   ────────────────────────────────────────────────
+   [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+
+   Opción B - Bash/Terminal (Mac/Linux):
+   ────────────────────────────────────────────────
+   openssl rand -base64 32
+
+   Opción C - Online:
+   ────────────────────────────────────────────────
+   https://generate-secret.vercel.app/32
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 5: Conectar Database al Proyecto
+═══════════════════════════════════════════════════════════════
+
+1. En la configuración del proyecto (antes de deploy)
+
+2. O después en: Project Settings → Storage
+
+3. Click "Connect Store"
+
+4. Selecciona la database: fleet-key-db
+
+5. Click "Connect"
+
+6. ✅ Vercel agregará automáticamente:
+   - POSTGRES_PRISMA_URL → se usará como DATABASE_URL
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 6: ¡DEPLOY!
+═══════════════════════════════════════════════════════════════
+
+1. Click en "Deploy"
+
+2. Espera 2-3 minutos (verás el progreso en pantalla)
+
+3. ✅ Cuando veas "Congratulations!" - está deployed!
+
+4. 📝 COPIA LA URL: https://fleet-key-management-xxxx.vercel.app
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 7: Actualizar NEXTAUTH_URL
+═══════════════════════════════════════════════════════════════
+
+1. Ve a: Project Settings → Environment Variables
+
+2. Edita la variable NEXTAUTH_URL
+
+3. Reemplaza con tu URL real de Vercel
+
+4. Click "Save"
+
+5. Redeploy: Deployments → click "..." → "Redeploy"
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 8: Ejecutar Migraciones de Base de Datos
+═══════════════════════════════════════════════════════════════
+
+Opción A - Usando Vercel CLI (Recomendado):
+────────────────────────────────────────────────
+
+1. Instala Vercel CLI en tu computadora:
+   
+   npm install -g vercel
+
+2. Login a Vercel:
+   
+   vercel login
+
+3. Vincula tu proyecto local:
+   
+   vercel link
+   
+   Selecciona:
+   - Scope: Tu cuenta
+   - Link to existing project: Yes
+   - Project: fleet-key-management
+
+4. Descarga las variables de entorno:
+   
+   vercel env pull .env.production
+
+5. Ejecuta las migraciones:
+   
+   npx prisma migrate deploy
+
+6. Carga los datos de prueba:
+   
+   npx prisma db seed
+
+
+Opción B - Manualmente:
+────────────────────────────────────────────────
+
+1. Ve a: Project Settings → Environment Variables
+
+2. Copia el valor de POSTGRES_PRISMA_URL
+
+3. En tu computadora, crea archivo .env.production:
+   
+   DATABASE_URL="[pega-aquí-POSTGRES_PRISMA_URL]"
+
+4. Ejecuta:
+   
+   npx prisma migrate deploy
+   npx prisma db seed
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 9: ¡PROBAR LA APLICACIÓN!
+═══════════════════════════════════════════════════════════════
+
+1. Abre tu URL de Vercel en el navegador
+   https://tu-proyecto.vercel.app
+
+2. Prueba con las credenciales de seed:
+
+   ┌─────────────────────────────────────────┐
+   │ DISPATCH (Admin):                       │
+   │   Dispatch ID: 0000                     │
+   │   PIN: 0000                             │
+   │                                         │
+   │ DRIVER (Chofer):                        │
+   │   Últimos 4 de Licencia: 5678          │
+   │   PIN: 1234                             │
+   │                                         │
+   │ DRIVER (Chofer 2):                      │
+   │   Últimos 4 de Licencia: 4321          │
+   │   PIN: 5678                             │
+   │                                         │
+   │ CLEANING_STAFF (Limpieza):              │
+   │   Últimos 4 de Licencia: 3344          │
+   │   PIN: 9012                             │
+   └─────────────────────────────────────────┘
+
+3. ✅ Si puedes hacer login → ¡ÉXITO!
+
+
+═══════════════════════════════════════════════════════════════
+  PASO 10: Configuración Adicional (Opcional)
+═══════════════════════════════════════════════════════════════
+
+□ Dominio Personalizado:
+  Settings → Domains → Add Domain
+
+□ Monitoreo:
+  Analytics tab → Ver métricas de uso
+
+□ Logs en Tiempo Real:
+  Deployments → [selecciona deployment] → Functions
+
+□ Speed Insights:
+  Habilitar en Project Settings → Speed Insights
+
+
+═══════════════════════════════════════════════════════════════
+  ✅ CHECKLIST FINAL
+═══════════════════════════════════════════════════════════════
+
+□ Base de datos PostgreSQL creada en Vercel
+□ Proyecto importado desde GitHub
+□ Variables de entorno configuradas:
+  □ NEXTAUTH_SECRET
+  □ NEXTAUTH_URL
+  □ DATABASE_URL (conectado automáticamente)
+□ Database vinculada al proyecto
+□ Primer deployment exitoso
+□ NEXTAUTH_URL actualizada con URL real
+□ Migraciones ejecutadas (prisma migrate deploy)
+□ Datos de prueba cargados (prisma db seed)
+□ Login funcional probado
+□ URL compartida con equipo
+
+
+═══════════════════════════════════════════════════════════════
+  🎉 ¡DEPLOYMENT COMPLETADO!
+═══════════════════════════════════════════════════════════════
+
+Tu aplicación está ahora en producción y accesible globalmente.
+
+Próximos pasos:
+• Comparte la URL con tu equipo
+• Crea usuarios reales (elimina los de prueba)
+• Configura un dominio personalizado
+• Monitorea el uso en Analytics
+
+
+═══════════════════════════════════════════════════════════════
+  🔄 DEPLOYMENTS AUTOMÁTICOS
+═══════════════════════════════════════════════════════════════
+
+¡Buenas noticias! Cada vez que hagas:
+
+  git push origin main
+
+Vercel automáticamente:
+1. Detecta el cambio
+2. Ejecuta el build
+3. Corre los tests
+4. Deploya la nueva versión
+5. Te notifica por email
+
+No necesitas hacer nada más. ✨
+
+
+═══════════════════════════════════════════════════════════════
+  ❓ TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ Error: "Prisma Client not found"
+   → Vercel ejecuta automáticamente prisma generate
+   → Verifica que postinstall esté en package.json
+
+❌ Error: "Database connection failed"
+   → Verifica que la database esté conectada en Storage tab
+   → Revisa que POSTGRES_PRISMA_URL esté configurada
+
+❌ Error: "NEXTAUTH_SECRET is not set"
+   → Ve a Environment Variables y agrega la variable
+   → Redeploy después de agregar
+
+❌ Login no funciona / tabla User vacía
+   → Ejecuta: npx prisma db seed
+   → Verifica que las migraciones se ejecutaron
+
+❌ Cambios no se reflejan
+   → Espera 30 segundos (propagación de CDN)
+   → Fuerza refresh: Ctrl+Shift+R
+
+❌ Error 500 Internal Server Error
+   → Ve a Deployments → Functions → Ver logs
+   → Revisa los logs para el error específico
+
+
+═══════════════════════════════════════════════════════════════
+  📚 RECURSOS ÚTILES
+═══════════════════════════════════════════════════════════════
+
+• Vercel Dashboard: https://vercel.com/dashboard
+• Documentación Vercel: https://vercel.com/docs
+• Vercel CLI Docs: https://vercel.com/docs/cli
+• Prisma Docs: https://www.prisma.io/docs
+• Next.js Deployment: https://nextjs.org/docs/deployment
+
+• DEPLOYMENT.md - Guía completa técnica
+• VERCEL_QUICKSTART.md - Guía rápida resumida
+• README.md - Documentación del proyecto
+
+
+═══════════════════════════════════════════════════════════════
+
+¿Necesitas ayuda? Revisa los logs en Vercel Dashboard o
+abre un issue en el repositorio de GitHub.
+
+═══════════════════════════════════════════════════════════════
