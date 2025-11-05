@@ -14,7 +14,7 @@ export default async function AdminPage() {
     redirect('/login')
   }
 
-  // Obtener todas las transacciones activas (llaves prestadas)
+  // Get all active transactions (checked out keys)
   const activeLoans = await prisma.keyTransaction.findMany({
     where: {
       status: 'CHECKED_OUT'
@@ -38,14 +38,14 @@ export default async function AdminPage() {
     }
   })
 
-  // Calcular llaves vencidas (más de 12 horas)
+  // Calculate overdue keys (more than 12 hours)
   const now = new Date()
   const overdueLoans = activeLoans.filter(loan => {
     const hoursSince = (now.getTime() - new Date(loan.checkoutTime).getTime()) / (1000 * 60 * 60)
     return hoursSince > 12
   })
 
-  // Estadísticas generales
+  // General statistics
   const stats = {
     totalKeys: await prisma.key.count(),
     activeLoans: activeLoans.length,
@@ -56,7 +56,7 @@ export default async function AdminPage() {
     lostKeys: await prisma.key.count({ where: { status: 'LOST' } })
   }
 
-  // Transacciones recientes (últimas 10)
+  // Recent transactions (last 10)
   const recentTransactions = await prisma.keyTransaction.findMany({
     where: {
       status: 'CHECKED_IN'
@@ -96,7 +96,7 @@ export default async function AdminPage() {
         </div>
       </div>
 
-      {/* Estadísticas Principales */}
+      {/* Main Statistics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <Card>
           <CardContent className="pt-6">
@@ -169,7 +169,7 @@ export default async function AdminPage() {
         </Card>
       </div>
 
-      {/* Alertas de Llaves Vencidas */}
+      {/* Overdue Keys Alerts */}
       {overdueLoans.length > 0 && (
         <Card className="border-red-300 bg-red-50">
           <CardHeader>
@@ -211,7 +211,7 @@ export default async function AdminPage() {
         </Card>
       )}
 
-      {/* Llaves Actualmente Prestadas */}
+      {/* Currently Checked Out Keys */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -264,7 +264,7 @@ export default async function AdminPage() {
         </CardContent>
       </Card>
 
-      {/* Historial Reciente */}
+      {/* Recent History */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
