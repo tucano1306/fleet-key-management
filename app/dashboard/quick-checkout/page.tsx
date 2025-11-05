@@ -61,7 +61,7 @@ export default function QuickCheckoutPage() {
       const result = await quickCheckinKey(keyInfo.key.currentTransaction.id)
 
       if (result.success) {
-        setSuccessMessage(`✓ Llave ${keyInfo.key.keyNumber} devuelta exitosamente`)
+        setSuccessMessage(`✓ Key ${keyInfo.key.keyNumber} returned successfully`)
         setKeyNumber('')
         setKeyInfo(null)
         
@@ -70,7 +70,7 @@ export default function QuickCheckoutPage() {
           await logoutAndRedirect()
         }, 2000)
       } else {
-        setError(result.error || 'Error al procesar la devolución')
+        setError(result.error || 'Error processing the return')
         setIsProcessing(false)
       }
     } else {
@@ -78,7 +78,7 @@ export default function QuickCheckoutPage() {
       const result = await quickCheckoutKey(keyInfo.key.id)
 
       if (result.success) {
-        setSuccessMessage(`✓ Llave ${keyInfo.key.keyNumber} retirada exitosamente`)
+        setSuccessMessage(`✓ Key ${keyInfo.key.keyNumber} checked out successfully`)
         setKeyNumber('')
         setKeyInfo(null)
         
@@ -87,7 +87,7 @@ export default function QuickCheckoutPage() {
           await logoutAndRedirect()
         }, 2000)
       } else {
-        setError(result.error || 'Error al procesar el retiro')
+        setError(result.error || 'Error processing the checkout')
         setIsProcessing(false)
       }
     }
@@ -115,10 +115,10 @@ export default function QuickCheckoutPage() {
             </svg>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
-            Retiro Rápido
+            Quick Checkout
           </h1>
           <p className="mt-2 text-sm sm:text-base md:text-lg text-gray-600">
-            Escanea o ingresa el número de llave
+            Scan or enter key number
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export default function QuickCheckoutPage() {
                 {successMessage}
               </p>
               <p className="text-center text-xs sm:text-sm text-success-600 mt-2">
-                Cerrando sesión por seguridad...
+                Logging out for security...
               </p>
             </CardContent>
           </Card>
@@ -147,9 +147,9 @@ export default function QuickCheckoutPage() {
         <Card className="shadow-2xl border-0 overflow-hidden animate-slide-up">
           <div className="gradient-primary h-1"></div>
           <CardHeader className="px-4 sm:px-6 bg-gradient-to-br from-white to-gray-50">
-            <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">Número de Llave</CardTitle>
+            <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">Key Number</CardTitle>
             <CardDescription className="text-xs sm:text-sm text-gray-500">
-              Ingresa el código de la llave que necesitas
+              Enter the code of the key you need
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 px-4 sm:px-6 pb-6">
@@ -185,7 +185,7 @@ export default function QuickCheckoutPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <p className="text-sm sm:text-base text-primary-600 font-medium">Buscando llave...</p>
+                  <p className="text-sm sm:text-base text-primary-600 font-medium">Searching for key...</p>
                 </div>
               </div>
             )}
@@ -200,32 +200,32 @@ export default function QuickCheckoutPage() {
                 }`}>
                   <h3 className="mb-4 text-center text-lg sm:text-xl font-bold text-primary-900">
                     {keyInfo.key.status === 'CHECKED_OUT_BY_ME' 
-                      ? '⚠️ Esta llave ya está en tu posesión' 
-                      : 'Unidad Encontrada'}
+                      ? '⚠️ This key is already in your possession' 
+                      : 'Vehicle Found'}
                   </h3>
                   
                   <div className="space-y-3">
                     <div className="flex flex-col sm:flex-row sm:justify-between border-b border-primary-200 pb-2 gap-1">
-                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Número de Unidad:</span>
+                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Unit Number:</span>
                       <span className="text-xl sm:text-2xl font-bold text-primary-900">
                         {keyInfo.key.vehicle.unitNumber}
                       </span>
                     </div>
                     
                     <div className="flex flex-col sm:flex-row sm:justify-between border-b border-primary-200 pb-2 gap-1">
-                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Placa:</span>
+                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Plate:</span>
                       <span className="font-bold text-primary-900 text-base sm:text-lg">
                         {keyInfo.key.vehicle.plateNumber}
                       </span>
                     </div>
                     
                     <div className="flex flex-col sm:flex-row sm:justify-between border-b border-primary-200 pb-2 gap-1">
-                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Tipo:</span>
+                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Type:</span>
                       <span className="text-primary-900 text-sm sm:text-base">{keyInfo.key.vehicle.vehicleType}</span>
                     </div>
                     
                     <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Vehículo:</span>
+                      <span className="font-semibold text-primary-700 text-sm sm:text-base">Vehicle:</span>
                       <span className="text-primary-900 text-sm sm:text-base">
                         {keyInfo.key.vehicle.brand} {keyInfo.key.vehicle.model}
                       </span>
@@ -234,9 +234,9 @@ export default function QuickCheckoutPage() {
                     {keyInfo.key.status === 'CHECKED_OUT_BY_ME' && keyInfo.key.currentTransaction && (
                       <div className="mt-4 pt-4 border-t-2 border-amber-300">
                         <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                          <span className="font-semibold text-amber-700 text-sm sm:text-base">Retirada desde:</span>
+                          <span className="font-semibold text-amber-700 text-sm sm:text-base">Checked out since:</span>
                           <span className="text-amber-900 font-bold text-sm sm:text-base">
-                            {new Date(keyInfo.key.currentTransaction.checkoutTime).toLocaleString('es-ES', {
+                            {new Date(keyInfo.key.currentTransaction.checkoutTime).toLocaleString('en-US', {
                               day: '2-digit',
                               month: '2-digit',
                               year: 'numeric',
@@ -262,17 +262,17 @@ export default function QuickCheckoutPage() {
                   size="lg"
                 >
                   {isProcessing 
-                    ? 'Procesando...' 
+                    ? 'Processing...' 
                     : keyInfo.key.status === 'CHECKED_OUT_BY_ME'
-                      ? '✓ Devolver Llave (Enter)'
-                      : 'Confirmar Retiro (Enter)'
+                      ? '✓ Return Key (Enter)'
+                      : 'Confirm Checkout (Enter)'
                   }
                 </Button>
 
                 <p className="text-center text-xs sm:text-sm text-primary-600 px-2">
                   {keyInfo.key.status === 'CHECKED_OUT_BY_ME'
-                    ? 'Presiona Enter o haz clic para devolver la llave'
-                    : 'Presiona Enter o haz clic en el botón para confirmar'
+                    ? 'Press Enter or click to return the key'
+                    : 'Press Enter or click the button to confirm'
                   }
                 </p>
               </div>
