@@ -21,20 +21,20 @@ export default function LoginPage() {
     setError('')
 
     if (!identifier.trim() || !pin.trim()) {
-      setError(`Por favor ingrese ${userType === 'DISPATCH' ? 'ID' : 'últimos 4 dígitos de licencia'} y PIN`)
+      setError(`Please enter ${userType === 'DISPATCH' ? 'ID' : 'last 4 digits of license'} and PIN`)
       return
     }
 
-    // Validar formato de licenseLast4 para DRIVER
+    // Validate licenseLast4 format for DRIVER
     if (userType === 'DRIVER') {
       if (identifier.length !== 4 || !/^\d{4}$/.test(identifier)) {
-        setError('Los últimos 4 dígitos de licencia deben ser exactamente 4 números')
+        setError('Last 4 digits of license must be exactly 4 numbers')
         return
       }
     }
 
     if (pin.length < 4) {
-      setError('El PIN debe tener al menos 4 dígitos')
+      setError('PIN must be at least 4 digits')
       return
     }
 
@@ -48,7 +48,7 @@ export default function LoginPage() {
           router.push('/dashboard/quick-checkout')
         }
       } else {
-        setError(result.error || 'Error al iniciar sesión')
+        setError(result.error || 'Login error')
       }
     })
   }
@@ -65,9 +65,9 @@ export default function LoginPage() {
           </div>
         </div>
         <CardTitle className="text-center text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
-          Sistema de Llaves
+          Key Management System
         </CardTitle>
-        <p className="text-center text-sm text-gray-500">Gestión inteligente de flota</p>
+        <p className="text-center text-sm text-gray-500">Intelligent Fleet Management</p>
       </CardHeader>
       
       <CardContent className="px-4 sm:px-6 pb-8">
@@ -88,14 +88,14 @@ export default function LoginPage() {
               <svg className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              Tipo de Usuario
+              User Type
             </label>
             <select
               value={userType}
               onChange={(e) => setUserType(e.target.value as any)}
               className="w-full h-11 sm:h-12 rounded-xl border-2 border-gray-200 px-4 text-sm sm:text-base focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all outline-none bg-white hover:border-gray-300"
             >
-              <option value="DRIVER">🚗 Chofer / Staff</option>
+              <option value="DRIVER">🚗 Driver / Staff</option>
               <option value="DISPATCH">👔 Dispatch</option>
             </select>
           </div>
@@ -105,7 +105,7 @@ export default function LoginPage() {
               <svg className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
               </svg>
-              {userType === 'DISPATCH' ? 'ID de Dispatch' : 'Últimos 4 Dígitos de Licencia'}
+              {userType === 'DISPATCH' ? 'Dispatch ID' : 'Last 4 Digits of License'}
             </label>
             <Input
               value={identifier}
@@ -123,7 +123,7 @@ export default function LoginPage() {
               <svg className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              PIN de Seguridad
+              Security PIN
             </label>
             <Input
               type="password"
@@ -146,14 +146,14 @@ export default function LoginPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Iniciando...
+                Logging in...
               </div>
             ) : (
               <div className="flex items-center justify-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                 </svg>
-                Iniciar Sesión
+                Log In
               </div>
             )}
           </Button>
@@ -161,7 +161,7 @@ export default function LoginPage() {
           {userType === 'DRIVER' && (
             <div className="text-center text-xs sm:text-sm pt-2">
               <Link href="/register" className="text-primary-600 hover:text-primary-700 font-semibold hover:underline transition-all">
-                ¿Primera vez? Regístrate aquí →
+                First time? Register here →
               </Link>
             </div>
           )}
