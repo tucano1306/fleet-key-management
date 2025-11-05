@@ -26,28 +26,28 @@ export default function RegisterPage() {
 
     // Validaciones del lado del cliente
     if (!formData.fullName || !formData.licenseLast4 || !formData.pin || !formData.confirmPin) {
-      setError('Todos los campos son obligatorios')
+      setError('All fields are required')
       return
     }
 
     // Validar formato de los últimos 4 dígitos
     if (formData.licenseLast4.length !== 4 || !/^\d{4}$/.test(formData.licenseLast4)) {
-      setError('Los últimos 4 dígitos de licencia deben ser exactamente 4 números')
+      setError('Last 4 digits of license must be exactly 4 numbers')
       return
     }
 
     if (formData.pin.length < 4 || formData.pin.length > 6) {
-      setError('El PIN debe tener entre 4 y 6 dígitos')
+      setError('PIN must be between 4 and 6 digits')
       return
     }
 
     if (!/^\d+$/.test(formData.pin)) {
-      setError('El PIN solo debe contener números')
+      setError('PIN must contain only numbers')
       return
     }
 
     if (formData.pin !== formData.confirmPin) {
-      setError('Los PINs no coinciden')
+      setError('PINs do not match')
       return
     }
 
@@ -63,7 +63,7 @@ export default function RegisterPage() {
         // Redirigir al login después del registro exitoso
         router.push('/login?registered=true')
       } else {
-        setError(result.error || 'Error al registrar el chofer')
+        setError(result.error || 'Error registering driver')
       }
     })
   }
@@ -80,10 +80,10 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
-            Registro de Chofer
+            Driver Registration
           </CardTitle>
           <CardDescription className="text-center">
-            Completa el formulario para crear tu cuenta
+            Complete the form to create your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -96,13 +96,13 @@ export default function RegisterPage() {
 
             <div className="space-y-2">
               <label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-                Nombre Completo
+                Full Name
               </label>
               <Input
                 id="fullName"
                 name="fullName"
                 type="text"
-                placeholder="Juan Pérez"
+                placeholder="John Doe"
                 value={formData.fullName}
                 onChange={handleChange}
                 disabled={isPending}
@@ -112,7 +112,7 @@ export default function RegisterPage() {
 
             <div className="space-y-2">
               <label htmlFor="role" className="text-sm font-medium text-gray-700">
-                Tipo de Personal
+                Personnel Type
               </label>
               <select
                 id="role"
@@ -123,14 +123,14 @@ export default function RegisterPage() {
                 className="w-full h-11 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
               >
-                <option value="DRIVER">Chofer</option>
-                <option value="CLEANING_STAFF">Personal de Limpieza</option>
+                <option value="DRIVER">Driver</option>
+                <option value="CLEANING_STAFF">Cleaning Staff</option>
               </select>
             </div>
 
             <div className="space-y-2">
               <label htmlFor="licenseLast4" className="text-sm font-medium text-gray-700">
-                Últimos 4 Dígitos de Licencia
+                Last 4 Digits of License
               </label>
               <Input
                 id="licenseLast4"
@@ -149,7 +149,7 @@ export default function RegisterPage() {
 
             <div className="space-y-2">
               <label htmlFor="pin" className="text-sm font-medium text-gray-700">
-                Crear PIN (4-6 dígitos)
+                Create PIN (4-6 digits)
               </label>
               <Input
                 id="pin"
@@ -168,7 +168,7 @@ export default function RegisterPage() {
 
             <div className="space-y-2">
               <label htmlFor="confirmPin" className="text-sm font-medium text-gray-700">
-                Confirmar PIN
+                Confirm PIN
               </label>
               <Input
                 id="confirmPin"
@@ -192,7 +192,7 @@ export default function RegisterPage() {
               disabled={isPending}
               isLoading={isPending}
             >
-              Registrarse
+              Register
             </Button>
 
             <div className="text-center">
@@ -202,7 +202,7 @@ export default function RegisterPage() {
                 className="text-sm text-primary-600 hover:text-primary-700 font-medium"
                 disabled={isPending}
               >
-                ¿Ya tienes cuenta? Inicia sesión
+                Already have an account? Log in
               </button>
             </div>
           </form>
