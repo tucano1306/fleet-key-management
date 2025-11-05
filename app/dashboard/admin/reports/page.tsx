@@ -83,12 +83,12 @@ export default async function ReportsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">📊 Reportes y Estadísticas</h1>
-          <p className="text-gray-600 mt-1">Análisis detallado de uso y rendimiento</p>
+          <h1 className="text-3xl font-bold text-gray-900">📊 Reports and Statistics</h1>
+          <p className="text-gray-600 mt-1">Detailed analysis of usage and performance</p>
         </div>
         <Link href="/dashboard/admin">
           <Badge variant="default" className="cursor-pointer px-4 py-2">
-            ← Volver al Panel
+            ← Back to Panel
           </Badge>
         </Link>
       </div>
@@ -100,13 +100,13 @@ export default async function ReportsPage() {
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            Incidentes Reportados ({incidents.length})
+            Reported Incidents ({incidents.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           {incidents.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
-              <p>✅ No hay incidentes reportados</p>
+              <p>✅ No incidents reported</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -121,25 +121,25 @@ export default async function ReportsPage() {
                           incident.vehicleCondition === 'MAJOR_DAMAGE' ? 'danger' :
                           'danger'
                         }>
-                          {incident.vehicleCondition === 'MINOR_DAMAGE' ? '⚠️ Daño Menor' :
-                           incident.vehicleCondition === 'MAJOR_DAMAGE' ? '🔴 Daño Mayor' :
-                           '🚨 Accidente'}
+                          {incident.vehicleCondition === 'MINOR_DAMAGE' ? '⚠️ Minor Damage' :
+                           incident.vehicleCondition === 'MAJOR_DAMAGE' ? '🔴 Major Damage' :
+                           '🚨 Accident'}
                         </Badge>
                       </div>
                       <p className="text-sm text-gray-600">
-                        Placa: {incident.key.vehicle.plateNumber} • Unidad: {incident.key.vehicle.unitNumber}
+                        Plate: {incident.key.vehicle.plateNumber} • Unit: {incident.key.vehicle.unitNumber}
                       </p>
                       <p className="text-sm text-gray-700 mt-2">
-                        <strong>Chofer:</strong> {incident.user.fullName} {incident.user.licenseLast4 && `(Lic: ${incident.user.licenseLast4})`}
+                        <strong>Driver:</strong> {incident.user.fullName} {incident.user.licenseLast4 && `(Lic: ${incident.user.licenseLast4})`}
                       </p>
                       {incident.incidentReport && (
                         <div className="mt-3 p-3 bg-amber-50 rounded border border-amber-200">
-                          <p className="text-xs font-semibold text-amber-900 mb-1">Descripción del Incidente:</p>
+                          <p className="text-xs font-semibold text-amber-900 mb-1">Incident Description:</p>
                           <p className="text-sm text-amber-800">{incident.incidentReport}</p>
                         </div>
                       )}
                       <p className="text-xs text-gray-500 mt-2">
-                        Reportado: {incident.checkinTime ? new Date(incident.checkinTime).toLocaleString('es-ES') : 'N/A'}
+                        Reported: {incident.checkinTime ? new Date(incident.checkinTime).toLocaleString('en-US') : 'N/A'}
                       </p>
                     </div>
                   </div>
@@ -157,7 +157,7 @@ export default async function ReportsPage() {
             <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            Uso por Vehículo
+            Usage by Vehicle
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -171,12 +171,12 @@ export default async function ReportsPage() {
                       <h3 className="font-semibold text-gray-900">{vehicle.brand} {vehicle.model}</h3>
                       <p className="text-sm text-gray-500">{vehicle.unitNumber} • {vehicle.plateNumber}</p>
                     </div>
-                    <Badge variant="info">{totalUses} usos</Badge>
+                    <Badge variant="info">{totalUses} uses</Badge>
                   </div>
                   <div className="mt-3 text-sm text-gray-600">
-                    <p>Tipo: {vehicle.vehicleType}</p>
+                    <p>Type: {vehicle.vehicleType}</p>
                     <p>Color: {vehicle.color || 'N/A'}</p>
-                    <p>Año: {vehicle.year}</p>
+                    <p>Year: {vehicle.year}</p>
                   </div>
                 </div>
               )
@@ -192,7 +192,7 @@ export default async function ReportsPage() {
             <svg className="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            Uso por Conductor
+            Usage by Driver
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -200,10 +200,10 @@ export default async function ReportsPage() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="text-left p-3 font-semibold text-gray-700">Conductor</th>
-                  <th className="text-left p-3 font-semibold text-gray-700">Licencia</th>
-                  <th className="text-center p-3 font-semibold text-gray-700">Total Usos</th>
-                  <th className="text-left p-3 font-semibold text-gray-700">Vehículos Más Usados</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Driver</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">License</th>
+                  <th className="text-center p-3 font-semibold text-gray-700">Total Uses</th>
+                  <th className="text-left p-3 font-semibold text-gray-700">Most Used Vehicles</th>
                 </tr>
               </thead>
               <tbody>
@@ -227,7 +227,7 @@ export default async function ReportsPage() {
                       <td className="p-3 text-center">
                         <Badge variant="info">{driver.keyTransactions.length}</Badge>
                       </td>
-                      <td className="p-3 text-gray-600 text-xs">{topVehicles || 'Sin usos'}</td>
+                      <td className="p-3 text-gray-600 text-xs">{topVehicles || 'No uses'}</td>
                     </tr>
                   )
                 })}

@@ -74,11 +74,11 @@ export default async function HistoryPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Historial de Devoluciones</h1>
-          <p className="text-gray-600 mt-1">Registro completo de todas las devoluciones de llaves</p>
+          <h1 className="text-3xl font-bold text-gray-900">Return History</h1>
+          <p className="text-gray-600 mt-1">Complete record of all key returns</p>
         </div>
         <Link href="/dashboard/admin">
-          <Badge variant="info" className="cursor-pointer">← Volver al Panel</Badge>
+          <Badge variant="info" className="cursor-pointer">← Back to Panel</Badge>
         </Link>
       </div>
 
@@ -87,7 +87,7 @@ export default async function HistoryPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-sm text-gray-600">Hoy</p>
+              <p className="text-sm text-gray-600">Today</p>
               <p className="text-3xl font-bold text-primary-600">{stats.today}</p>
             </div>
           </CardContent>
@@ -96,7 +96,7 @@ export default async function HistoryPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-sm text-gray-600">Esta Semana</p>
+              <p className="text-sm text-gray-600">This Week</p>
               <p className="text-3xl font-bold text-blue-600">{stats.thisWeek}</p>
             </div>
           </CardContent>
@@ -105,7 +105,7 @@ export default async function HistoryPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-sm text-gray-600">Total Registrado</p>
+              <p className="text-sm text-gray-600">Total Recorded</p>
               <p className="text-3xl font-bold text-green-600">{stats.total}</p>
             </div>
           </CardContent>
@@ -115,24 +115,24 @@ export default async function HistoryPage() {
       {/* Tabla de Historial */}
       <Card>
         <CardHeader>
-          <CardTitle>Todas las Devoluciones</CardTitle>
+          <CardTitle>All Returns</CardTitle>
         </CardHeader>
         <CardContent>
           {completedTransactions.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500">No hay devoluciones registradas aún</p>
+              <p className="text-gray-500">No returns registered yet</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Fecha/Hora Devolución</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Usuario</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Vehículo</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Llave</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Tiempo de Uso</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Estado</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Return Date/Time</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-700">User</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Vehicle</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Key</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Usage Time</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -146,7 +146,7 @@ export default async function HistoryPage() {
                     return (
                       <tr key={transaction.id} className="hover:bg-gray-50">
                         <td className="px-4 py-3">
-                          {checkinTime ? checkinTime.toLocaleString('es-ES', {
+                          {checkinTime ? checkinTime.toLocaleString('en-US', {
                             day: '2-digit',
                             month: '2-digit',
                             year: 'numeric',
@@ -179,7 +179,7 @@ export default async function HistoryPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <Badge variant="success">Devuelta</Badge>
+                          <Badge variant="success">Returned</Badge>
                         </td>
                       </tr>
                     )
